@@ -1,0 +1,110 @@
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  border-bottom: 1px solid #e9eaec;
+  background-color: white;
+  .header {
+    width: 1000px;
+    height: 70px;
+    padding-left: 0px;
+    padding-right: 0px;
+    margin: 0 auto;
+    a {
+      text-decoration: none;
+      color: #606266;
+      &:hover {
+        color: #2b85e4;
+      }
+    }
+    .el-col {
+      line-height: 70px;
+      text-align: center;
+      .logo {
+        font-size: 25px;
+        font-family: 'Arial Black';
+        text-align: left;
+        a {
+          color: #2b85e4;
+        }
+      }
+      .search {
+        float: right;
+        .search-input {
+          padding: 5px 20px 5px 10px;
+          border-radius: 50px;
+          width: 0px;
+          transition: all .5s linear;
+          border: 1px solid #E4E7ED;
+          border-width: 0;
+          outline: none;
+          overflow: hidden;
+          &:hover {
+            width: 180px;
+            border-width: 1px;
+          }
+          &:focus {
+            width: 180px;
+            border: 1px solid #409eff;
+          }
+        }
+        .search-icon {
+          position: absolute;
+          right: 270px;
+          top: 27px;
+        }
+      }
+    }
+  }
+}
+/* 头部动画效果 */
+.animated {
+  -webkit-animation-duration: .4s;
+  -moz-animation-duration: .4s;
+  -o-animation-duration: .4s;
+  animation-duration: .4s;
+  -webkit-animation-fill-mode: both;
+  -moz-animation-fill-mode: both;
+  -o-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+.animated.bounceInDown {
+  -webkit-animation-name: bounceInDown;
+  -moz-animation-name: bounceInDown;
+  -o-animation-name: bounceInDown;
+  animation-name: bounceInDown;
+}
+.animated.bounceOutUp {
+  -webkit-animation-name: bounceOutUp;
+  -moz-animation-name: bounceOutUp;
+  -o-animation-name: bounceOutUp;
+  animation-name: bounceOutUp;
+}
+@keyframes bounceOutUp {
+  0% {
+    transform: translateY(0);
+  }
+  30% {
+    opacity: 1;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-100px);
+  }
+}
+@keyframes bounceInDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-100px);
+  }
+  30% {
+    opacity: 1;
+    transform: translateY(30px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}

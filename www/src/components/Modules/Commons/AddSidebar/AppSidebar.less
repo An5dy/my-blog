@@ -1,0 +1,68 @@
+.sidebar {
+  .el-card {
+    margin-bottom: 20px;
+  }
+  a {
+    text-decoration: none;
+    color: #909399;
+    font-size: 13px;
+    line-height: 1.9em;
+    &:hover {
+      color: #409eff;
+    }
+  }
+  .user-info {
+    text-align: center;
+    .avatar {
+      img {
+        margin-left: 25%;
+        margin-right: 25%;
+        width: 50%;
+        display: block;
+        border-radius: 50%;
+        -webkit-transition: all 0.8s;
+        -moz-transition: all 0.8s;
+        -o-transition: all 0.8s;
+        &:hover {
+          transform:rotate(360deg);
+          -webkit-transform:rotate(360deg);
+          -moz-transform:rotate(360deg);
+          -o-transform:rotate(360deg);
+          -ms-transform:rotate(360deg);
+        }
+      }
+    }
+    .contacts {
+      margin-bottom: 0px;
+      list-style: none;
+      display: block;
+      padding: 0 0;
+      text-align: center;
+      li {
+        display: inline;
+        padding: 0 4px;
+        a {
+          text-decoration: none;
+          color: #909399;
+          &:hover {
+            color: #409eff;
+          }
+        }
+      }
+    }
+  }
+  .el-button {
+    text-align: right;
+    float: right;
+    padding: 3px 0;
+    font-size: 12px;
+  }
+}
+// 组件过渡动画
+.sidebar-slide-fade-enter-active {
+  transition: all 0.8s ease;
+}
+.sidebar-slide-fade-enter {
+  transform: translateX(100px);
+  opacity: 0;
+}

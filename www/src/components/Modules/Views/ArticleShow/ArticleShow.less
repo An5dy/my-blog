@@ -1,0 +1,59 @@
+.article {
+  width: 1000px;
+  padding-top: 100px;
+  padding-bottom: 50px;
+  color: #606266;
+  font-size: 14px;
+  line-height: 25px;
+  h2, h3, h4, h5 {
+    color: #303133;
+  }
+  .article-main {
+    background-color: white;
+    margin-right: 130px;
+    margin-left: 130px;
+    .title {
+      text-align: left;
+      h2 {
+        margin-bottom: 15px;
+        font-size: 25px;
+      }
+    }
+    .meta {
+      text-align: left;
+      i {
+        margin-right: 8px;
+        color: #909399;
+        font-size: 14px;
+      }
+    }
+    .content {
+      border-top: 1px solid #E4E7ED;
+      border-bottom: 1px solid #E4E7ED;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+    .other {
+      span {
+        margin-right: 5px;
+      }
+    }
+  }
+}
+.bounce-enter-active {
+  animation: bounce-in .7s;
+}
+.bounce-leave-active {
+  animation: bounce-in .7s reverse;
+}
+@keyframes bounce-in {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

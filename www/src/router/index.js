@@ -68,6 +68,14 @@ let routes = [
                 meta: {
                     title: '随想'
                 }
+            },
+            {
+                path: 'thoughts/:id',
+                name: 'thoughtShow',
+                component: Components.Modules.Views.ThoughtShow,
+                meta: {
+                    title: '详情'
+                }
             }
         ]
     },

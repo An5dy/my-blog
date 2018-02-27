@@ -41,6 +41,19 @@ class ThoughtService
     }
 
     /**
+     * 返回所有数据
+     *
+     * @return mixed
+     */
+    public function all()
+    {
+        $thoughts = $this->thoughtRepository
+                         ->all($this->columns);
+
+        return $thoughts;
+    }
+
+    /**
      * 保存或修改随想
      *
      * @param Request $request

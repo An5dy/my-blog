@@ -1,0 +1,43 @@
+.thought {
+  width: 900px;
+  padding-top: 100px;
+  padding-bottom: 50px;
+  .main {
+    .thought-card {
+      color: #909399;
+      font-size: 12px;
+      width: 250px;
+      float: left;
+      margin-right: 20px;
+      margin-top: 20px;
+      margin-bottom: 20px;
+      .thought-card-title {
+        margin-bottom: 10px;
+      }
+      a {
+        text-decoration: none;
+        color: #909399;
+        &:hover {
+          color: #409eff;
+        }
+      }
+    }
+  }
+}
+.bounce-enter-active {
+  animation: bounce-in .7s;
+}
+.bounce-leave-active {
+  animation: bounce-in .1s reverse;
+}
+@keyframes bounce-in {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

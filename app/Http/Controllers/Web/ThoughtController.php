@@ -31,7 +31,7 @@ class ThoughtController extends Controller
     public function index()
     {
         $thoughts = $this->thoughtService
-                         ->index();
+                         ->all();
 
         return new ThoughtCollection($thoughts);
     }
@@ -45,7 +45,7 @@ class ThoughtController extends Controller
     public function show($id)
     {
         $thought = $this->thoughtService
-                        ->show($id);
+                        ->show($id, 'description');
 
         return new ThoughtResource($thought);
     }

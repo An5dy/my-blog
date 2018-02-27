@@ -20,7 +20,9 @@ class ArticleService
 
     protected $attributes = [];
 
-    protected $columns = ['id', 'category_id', 'title', 'checked_num', 'created_at', 'updated_at'];
+    protected $columns = [
+        'id', 'category_id', 'title', 'checked_num', 'created_at', 'updated_at'
+    ];
 
     protected $orderBy = 'checked_num';
 

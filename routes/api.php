@@ -36,6 +36,11 @@ Route::group(['prefix' => '/admin', 'namespace' => 'Admin', 'middleware' => 'api
     Route::post('/links/update/{id}', 'LinkController@update')->where('id', '[0-9]+');// 编辑链接
     Route::get('/about', 'AboutController@index');// 关于
     Route::post('/about', 'AboutController@store');// 保存关于信息
+    Route::get('/thoughts', 'ThoughtController@index');// 随想列表
+    Route::post('/thoughts', 'ThoughtController@store');// 新增随想
+    Route::get('/thoughts/edit/{id}', 'ThoughtController@show');// 获取随想详情
+    Route::post('/thoughts/update/{id}', 'ThoughtController@update')->where('id', '[0-9]+');// 编辑随想
+    Route::post('/thoughts/{id}', 'ThoughtController@destroy')->where('id', '[0-9]+');// 删除随想
 });
 /* 前台api接口 */
 Route::group(['prefix' => '/', 'namespace' => 'Web'], function () {
@@ -44,4 +49,6 @@ Route::group(['prefix' => '/', 'namespace' => 'Web'], function () {
     Route::get('/archives', 'ArchiveController@index');// 文章归档
     Route::get('/sidebars', 'SidebarController@index');// 侧边栏
     Route::get('/about', 'AboutController@index');// 关于
+    Route::get('/thoughts', 'ThoughtController@index');// 随想列表
+    Route::get('/thoughts/{id}', 'ThoughtController@show');// 随想详情
 });

@@ -7,7 +7,7 @@
                         <router-link to="/">SEE THE FUTURE</router-link>
                     </div>
                 </el-col>
-                <el-col :span="4" :offset="6">
+                <el-col :span="4" :offset="4">
                     <div class="search">
                         <i class="el-icon-search search-icon"></i>
                         <input
@@ -20,6 +20,11 @@
                 <el-col :span="2">
                     <div>
                         <router-link to="/">首页</router-link>
+                    </div>
+                </el-col>
+                <el-col :span="2">
+                    <div>
+                        <router-link to="/thoughts">随想</router-link>
                     </div>
                 </el-col>
                 <el-col :span="2">

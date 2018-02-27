@@ -21,6 +21,18 @@ let routes = [
                 component: require('../components/Article/ArticleAdd'),
             },
             {
+                path: 'thoughts',
+                component: require('../components/Thought/Thought'),
+            },
+            {
+                path: 'thoughts/add',
+                component: require('../components/Thought/ThoughtAdd'),
+            },
+            {
+                path: 'thoughts/edit/:id',
+                component: require('../components/Thought/ThoughtAdd'),
+            },
+            {
                 path: 'categories',
                 component: require('../components/Category/Category'),
             },

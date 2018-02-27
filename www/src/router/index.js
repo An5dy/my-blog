@@ -60,6 +60,14 @@ let routes = [
                 meta: {
                     title: '关于'
                 }
+            },
+            {
+                path: 'thoughts',
+                name: 'thoughts',
+                component: Components.Modules.Views.Thought,
+                meta: {
+                    title: '随想'
+                }
             }
         ]
     },

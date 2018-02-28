@@ -15,6 +15,7 @@
 Route::group(['prefix' => '/admin', 'namespace' => 'Admin'], function () {
     Route::post('/login', 'LoginController@login');// 登录
 });
+
 Route::group(['prefix' => '/admin', 'namespace' => 'Admin', 'middleware' => 'api:jwt'], function () {
     Route::post('/logout', 'LoginController@logout');// 退出登录
     Route::post('/reset_password', 'ResetPasswordController@reset')->middleware('check.password');// 重置密码

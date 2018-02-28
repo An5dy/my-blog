@@ -12,9 +12,6 @@ class DeploymentController extends Controller
      *
      * @param Request $request
      */
-
-
-
     public function deploy(Request $request)
     {
         $commands = ['cd /www/new-blog', 'git pull'];

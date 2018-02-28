@@ -43,6 +43,7 @@ Route::group(['prefix' => '/admin', 'namespace' => 'Admin', 'middleware' => 'api
     Route::post('/thoughts/{id}', 'ThoughtController@destroy')->where('id', '[0-9]+');// 删除随想
 });
 /* 前台api接口 */
+
 Route::group(['prefix' => '/', 'namespace' => 'Web'], function () {
     Route::get('/articles', 'ArticleController@list');// 文章列表
     Route::get('/articles/{id}', 'ArticleController@show')->where('id', '[0-9]+');// 文章详情

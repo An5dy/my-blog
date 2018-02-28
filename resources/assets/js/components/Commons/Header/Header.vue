@@ -2,7 +2,7 @@
     <el-header>
         <el-row>
             <el-col :span="6" class="logo">
-                <router-link to="/admin/article/add">后台管理</router-link>
+                <router-link to="/admin">后台管理</router-link>
             </el-col>
             <el-col :span="6" :offset="12">
                 <el-dropdown @command="handleCommand">

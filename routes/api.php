@@ -54,4 +54,4 @@ Route::group(['prefix' => '/', 'namespace' => 'Web'], function () {
     Route::get('/thoughts/{id}', 'ThoughtController@show');// 随想详情
 });
 /* github webhook接口 */
-Route::post('/deploy', 'WebHook\DeploymentController@deploy');// webhook
+Route::post('/deploy', 'Hook\DeploymentController@deploy');// webhook

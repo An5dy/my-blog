@@ -124,7 +124,7 @@
                 this.dialogFormVisible = true;
             },
             onEdit() {
-                this.axios.post('/admin/categories/edit/' + this.currentCategory.id, {title: this.currentCategory.title})
+                this.axios.post('/admin/categories/update/' + this.currentCategory.id, {title: this.currentCategory.title})
                     .then(response => {
                         if (response.data.code === '10000') {
                             this.currentRow.title = this.currentCategory.title;

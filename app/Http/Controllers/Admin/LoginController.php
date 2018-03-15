@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use Cookie;
+use Laravel\Passport\Token;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -24,6 +25,7 @@ class LoginController extends Controller
 
         if (Auth::guard('admin')->once($this->credentials($request))) {
             $admin = user('admin');
+            // 生成新access_token
             $token = $admin->createToken('Admin Token')->accessToken;
             // 设置cookie（永不过期）
             $cookie = Cookie::forever('admin', json_encode([

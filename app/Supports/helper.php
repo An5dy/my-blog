@@ -8,7 +8,7 @@ if ( ! function_exists('api_success_info')) {
      * @param $message
      * @return array
      */
-    function api_success_info($message, array $data = [], $code = '10000')
+    function api_success_info($message = '', array $data = [], $code = '10000')
     {
         return [
             'code' => $code,
@@ -32,6 +32,50 @@ if ( ! function_exists('api_error_info')) {
             'code' => $code,
             'message' => $message,
         ];
+    }
+}
+
+if ( ! function_exists('api_success_response')) {
+    /**
+     * api返回正确提示
+     *
+     * @默认status为200请求成功
+     * @param array $data
+     * @param string $codeMessageKey
+     * @param int $status
+     * @return \Illuminate\Http\JsonResponse
+     */
+    function api_success_response(array $data = [], string $codeMessageKey = '10000', int $status = 200)
+    {
+        $arr = [
+            'code' => $codeMessageKey,
+            'message' => config('global.codeMessage.' . $codeMessageKey),
+        ];
+        if ( ! empty($data)) {
+            $arr['data'] = $data;
+        }
+
+        return response()->json($arr, $status);
+    }
+}
+
+if ( ! function_exists('api_error_response')) {
+    /**
+     * api返回错误提示
+     *
+     * @默认status为400请求参数错误
+     * @param string $codeMessageKey
+     * @param int $status
+     * @return \Illuminate\Http\JsonResponse
+     */
+    function api_error_response($codeMessageKey = '20000', $status = 400)
+    {
+        $arr = [
+            'code' => $codeMessageKey,
+            'message' => config('global.codeMessage.' . $codeMessageKey),
+        ];
+
+        return response()->json($arr, $status);
     }
 }
 

@@ -39,7 +39,7 @@
                 <div
                         v-for="link in links"
                         :key="link.id">
-                    <a href="link.path" target="_blank">{{ link.description }}</a>
+                    <a :href="link.path" target="_blank">{{ link.description }}</a>
                 </div>
             </el-card>
         </div>

@@ -17,7 +17,7 @@
                             <div class="archive-card-title">
                                 <router-link
                                         :to="{ name: 'show', params: { id: item.id }}">
-                                    {{item.title}}
+                                    {{item.title | substr}}
                                 </router-link>
                             </div>
                             <div class="archive-card-time">
@@ -49,6 +49,16 @@
                             this.show = true
                         }
                     })
+            }
+        },
+        filters: {
+            substr: function (value) {
+                var strCount = value.length
+                if (strCount > 15) {
+                    return value.slice(0, 15) + '...'
+                } else {
+                    return value
+                }
             }
         },
         mounted() {

@@ -2,9 +2,10 @@
 
 namespace App\Services;
 
-use App\Exceptions\ApiException;
 use Illuminate\Http\Request;
+use App\Exceptions\ApiException;
 use App\Repositories\ThoughtRepository;
+use Illuminate\Support\Facades\Cache;
 
 class ThoughtService
 {
@@ -47,8 +48,10 @@ class ThoughtService
      */
     public function all()
     {
-        $thoughts = $this->thoughtRepository
-                         ->all($this->columns);
+        // 新增缓存
+        $thoughts = Cache::tags(['thoughts'])->rememberForever('thoughts', function () {
+            return $this->thoughtRepository->all($this->columns);
+        });
 
         return $thoughts;
     }
@@ -74,6 +77,8 @@ class ThoughtService
             $thought = $this->thoughtRepository
                             ->update($this->attributes, $id);
         }
+
+        $this->flushCache();
 
         return $thought;
     }
@@ -110,9 +115,19 @@ class ThoughtService
         try {
             $this->thoughtRepository
                  ->delete($id);
+
+            $this->flushCache();
         } catch (\Exception $exception) {
 
             throw new ApiException('删除失败！');
         }
+    }
+
+    /**
+     * 清除缓存
+     */
+    protected function flushCache()
+    {
+        Cache::tags('thoughts')->flush();
     }
 }

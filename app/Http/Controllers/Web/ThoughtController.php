@@ -30,8 +30,7 @@ class ThoughtController extends Controller
      */
     public function index()
     {
-        $thoughts = $this->thoughtService
-                         ->all();
+        $thoughts = $this->thoughtService->all();
 
         return new ThoughtCollection($thoughts);
     }

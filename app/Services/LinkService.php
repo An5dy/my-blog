@@ -2,10 +2,11 @@
 
 namespace App\Services;
 
-use App\Exceptions\ApiException;
-use App\Http\Resources\LinkCollection;
 use Illuminate\Http\Request;
+use App\Exceptions\ApiException;
 use App\Repositories\LinkRepository;
+use Illuminate\Support\Facades\Cache;
+use App\Http\Resources\LinkCollection;
 
 class LinkService
 {
@@ -58,6 +59,8 @@ class LinkService
                      ->update($this->attributes, $id);
             }
 
+            $this->flushCache();
+
             return api_success_info('添加成功');
         } catch (\Exception $exception) {
 
@@ -78,10 +81,20 @@ class LinkService
             $this->linkRepository
                  ->delete($id);
 
+            $this->flushCache();
+
             return api_success_info('删除成功');
         } catch (\Exception $exception) {
 
             throw new ApiException('删除失败');
         }
+    }
+
+    /**
+     * 清除缓存
+     */
+    protected function flushCache()
+    {
+        Cache::tags('links')->flush();
     }
 }

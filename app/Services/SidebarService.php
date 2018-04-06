@@ -3,8 +3,9 @@
 namespace App\Services;
 
 use App\Criteria\LimitCriteria;
-use App\Repositories\ArticleRepository;
 use App\Repositories\LinkRepository;
+use Illuminate\Support\Facades\Cache;
+use App\Repositories\ArticleRepository;
 
 class SidebarService
 {
@@ -30,16 +31,20 @@ class SidebarService
      */
     public function index()
     {
-        // 设置查询条数
-        $this->articleRepository
-             ->pushCriteria(new LimitCriteria(5));
         // 文章
-        $articles = $this->articleRepository
-                         ->orderBy('created_at', 'desc')
-                         ->get(['id', 'title']);
+        $articles = Cache::tags(['articles', 'newest'])->rememberForever('newest', function () {
+            // 设置查询条数
+            $this->articleRepository->pushCriteria(new LimitCriteria(5));
+
+            return $this->articleRepository
+                        ->orderBy('created_at', 'desc')
+                        ->get(['id', 'title']);
+        });
+
         // 友情链接
-        $links = $this->linkRepository
-                      ->get(['id', 'path', 'description']);
+        $links = Cache::tags(['links'])->rememberForever('links', function () {
+            return $this->linkRepository->get(['id', 'path', 'description']);
+        });
 
         $data = collect()->put('articles', $articles)
                          ->put('links', $links)

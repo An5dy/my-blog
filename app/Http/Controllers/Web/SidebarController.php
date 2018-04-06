@@ -23,8 +23,7 @@ class SidebarController extends Controller
      */
     public function index()
     {
-        $response = $this->sidebarService
-                         ->index();
+        $response = $this->sidebarService->index();
 
         return $response;
     }

@@ -2,12 +2,13 @@
 
 namespace App\Services;
 
-use App\Events\ArticleCheck;
 use DB;
 use Parsedown;
 use Illuminate\Http\Request;
+use App\Events\ArticleCheck;
 use App\Exceptions\ApiException;
 use App\Repositories\TagRepository;
+use Illuminate\Support\Facades\Cache;
 use App\Repositories\ArticleRepository;
 use App\Http\Resources\ArticleResource;
 use App\Http\Resources\ArticleCollection;
@@ -105,6 +106,7 @@ class ArticleService
                                       ->text($request->markdown),
             'category_id' => $request->category,
         ];
+        // 开启事务
         DB::beginTransaction();
         try {
             if (empty($id)) {
@@ -118,10 +120,14 @@ class ArticleService
             $tags = collect($request->tags)->map(function ($tag) {
                 $tagObj = $this->tagRepository
                                ->firstOrCreate(['title' => strip_tags($tag)]);
+
                 return $tagObj->id;
             })->toArray();
-            $article->tags()
-                    ->sync($tags);
+            $article->tags()->sync($tags);
+
+            // 清空缓存
+            $this->flushCache();
+
             DB::commit();
 
             return api_success_info('发布成功');
@@ -176,8 +182,9 @@ class ArticleService
     public function destroy($id)
     {
         try {
-            $this->articleRepository
-                 ->delete($id);
+            $this->articleRepository->delete($id);
+
+            $this->flushCache();
 
             return api_success_info('删除成功');
         } catch (\Exception $exception) {
@@ -193,16 +200,19 @@ class ArticleService
      */
     public function archive()
     {
-        $articles = $this->articleRepository
-                         ->orderBy('created_at', 'desc')
-                         ->get(['id', 'title', 'created_at'])
-                         ->each(function ($article) {
-                             $article->published_at = $article->created_at
-                                                              ->format('M Y');
-                         })
-                         ->groupBy('published_at');
+        // 设置缓存
+        $articles = Cache::tags(['articles', 'archives'])->rememberForever('archives', function () {
+            // 获取数据
+            return $this->articleRepository
+                        ->orderBy('created_at', 'desc')
+                        ->get(['id', 'title', 'created_at'])
+                        ->each(function ($article) {
+                            $article->published_at = $article->created_at->format('M Y');
+                        })
+                        ->groupBy('published_at');
+        });
 
-        return new ArticleCollection($articles);
+        return $articles;
     }
 
     /**
@@ -227,5 +237,13 @@ class ArticleService
                 $article->title = implode('<em style="color:#409eff">' . $title . '</em>', $arr);
             }
         });
+    }
+
+    /**
+     * 清除缓存
+     */
+    protected function flushCache()
+    {
+        Cache::tags('articles')->flush();
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Web;
 
 use App\Services\ArticleService;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ArticleCollection;
 
 class ArchiveController extends Controller
 {
@@ -28,6 +29,6 @@ class ArchiveController extends Controller
         $response = $this->articleService
                          ->archive();
 
-        return $response;
+        return new ArticleCollection($response);
     }
 }

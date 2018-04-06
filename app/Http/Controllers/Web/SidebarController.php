@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Web;
 
 use App\Services\SidebarService;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class SidebarController extends Controller

@@ -2,9 +2,9 @@
 
 namespace App\Services;
 
+use Illuminate\Http\Request;
 use App\Http\Resources\AboutResource;
 use App\Repositories\Eloquent\AboutRepositoryEloquent as AboutRepository;
-use Illuminate\Http\Request;
 
 class AboutService
 {
@@ -28,8 +28,9 @@ class AboutService
      */
     public function index()
     {
-        $about = $this->aboutRepository
-                      ->first(['id', 'markdown']);
+        $about = $this->aboutRepository->first([
+            'id', 'markdown'
+        ]);
 
         return new AboutResource($about);
     }
@@ -48,11 +49,9 @@ class AboutService
         ];
         $id = $request->id;
         if (empty($id)) {
-            $about = $this->aboutRepository
-                          ->create($this->attributes);
+            $about = $this->aboutRepository->create($this->attributes);
         } else {
-            $about = $this->aboutRepository
-                          ->update($this->attributes, $id);
+            $about = $this->aboutRepository->update($this->attributes, $id);
         }
 
         return new AboutResource($about);

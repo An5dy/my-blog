@@ -9,7 +9,7 @@ use App\Events\ArticleCheck;
 use App\Exceptions\ApiException;
 use App\Repositories\TagRepository;
 use Illuminate\Support\Facades\Cache;
-use App\Repositories\ArticleRepository;
+use App\Repositories\Eloquent\ArticleRepositoryEloquent;
 
 class ArticleService
 {
@@ -29,7 +29,7 @@ class ArticleService
      * ArticleService constructor.
      * @param ArticleRepository $articleRepository
      */
-    public function __construct(ArticleRepository $articleRepository, TagRepository $tagRepository)
+    public function __construct(ArticleRepositoryEloquent $articleRepository, TagRepository $tagRepository)
     {
         $this->articleRepository = $articleRepository;
         $this->tagRepository = $tagRepository;

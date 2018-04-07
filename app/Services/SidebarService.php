@@ -5,7 +5,7 @@ namespace App\Services;
 use App\Criteria\LimitCriteria;
 use App\Repositories\LinkRepository;
 use Illuminate\Support\Facades\Cache;
-use App\Repositories\ArticleRepository;
+use App\Repositories\Eloquent\ArticleRepositoryEloquent;
 
 class SidebarService
 {
@@ -18,7 +18,7 @@ class SidebarService
      * @param ArticleRepository $articleRepository
      * @param LinkRepository $linkRepository
      */
-    public function __construct(ArticleRepository $articleRepository, LinkRepository $linkRepository)
+    public function __construct(ArticleRepositoryEloquent $articleRepository, LinkRepository $linkRepository)
     {
         $this->articleRepository = $articleRepository;
         $this->linkRepository = $linkRepository;

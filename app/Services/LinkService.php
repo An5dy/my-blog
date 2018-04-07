@@ -4,9 +4,9 @@ namespace App\Services;
 
 use Illuminate\Http\Request;
 use App\Exceptions\ApiException;
-use App\Repositories\LinkRepository;
 use Illuminate\Support\Facades\Cache;
 use App\Http\Resources\LinkCollection;
+use App\Repositories\Eloquent\LinkRepositoryEloquent as LinkRepository;
 
 class LinkService
 {
@@ -30,8 +30,9 @@ class LinkService
      */
     public function index()
     {
-        $links = $this->linkRepository
-                      ->all(['id', 'path', 'description', 'created_at', 'updated_at']);
+        $links = $this->linkRepository->all([
+            'id', 'path', 'description', 'created_at', 'updated_at'
+        ]);
 
         return new LinkCollection($links);
     }

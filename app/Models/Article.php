@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Prettus\Repository\Contracts\Transformable;
 use App\Models\Relationships\BelongsToCategory;
 use App\Models\Relationships\BelongsToManyTags;
@@ -16,8 +17,11 @@ use App\Models\Relationships\HasManyArticleChecks;
  */
 class Article extends Model implements Transformable
 {
-    use TransformableTrait, BelongsToManyTags,
-        BelongsToCategory, HasManyArticleChecks;
+    use TransformableTrait,
+        SoftDeletes,
+        BelongsToManyTags,
+        BelongsToCategory,
+        HasManyArticleChecks;
 
     /**
      * The attributes that are mass assignable.

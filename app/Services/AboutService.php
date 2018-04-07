@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Http\Resources\AboutResource;
-use App\Repositories\AboutRepository;
+use App\Repositories\Eloquent\AboutRepositoryEloquent as AboutRepository;
 use Illuminate\Http\Request;
 
 class AboutService
@@ -65,8 +65,9 @@ class AboutService
      */
     public function show()
     {
-        $about = $this->aboutRepository
-                      ->first(['description', 'created_at']);
+        $about = $this->aboutRepository->first([
+            'description', 'created_at'
+        ]);
 
         return new AboutResource($about);
     }

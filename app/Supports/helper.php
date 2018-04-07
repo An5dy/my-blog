@@ -107,3 +107,27 @@ if ( ! function_exists('transform_markdown')) {
                         ->text($markdown);
     }
 }
+
+if ( ! function_exists('flush_cache_by_key')) {
+    /**
+     * 通过键值删除缓存
+     *
+     * @param $key
+     */
+    function flush_cache_by_key($key)
+    {
+        cache()->forget($key);
+    }
+}
+
+if ( ! function_exists('flush_cache_by_tag')) {
+    /**
+     * 通过标记清除缓存
+     *
+     * @param $tag
+     */
+    function flush_cache_by_tag($tag)
+    {
+        cache()->tags($tag)->flush();
+    }
+}

@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Web;
 use Illuminate\Http\Request;
 use App\Services\ArticleService;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ArticleResource;
+use App\Http\Resources\ArticleCollection;
 
 class ArticleController extends Controller
 {
@@ -20,30 +22,28 @@ class ArticleController extends Controller
     }
 
     /**
-     * 列表
+     * 文章列表
      *
      * @param Request $request
      * @return \App\Http\Resources\ArticleCollection
      */
-    public function list(Request $request)
+    public function index(Request $request)
     {
-        $response = $this->articleService
-                         ->list($request);
+        $articles = $this->articleService->getByWhere($request);
 
-        return $response;
+        return new ArticleCollection($articles);
     }
 
     /**
      * 文章详情
      *
      * @param $id
-     * @return \App\Http\Resources\ArticleResource
+     * @return ArticleResource
      */
     public function show($id)
     {
-        $response = $this->articleService
-                         ->find($id, 'description');
+        $article = $this->articleService->find($id, 'description');
 
-        return $response;
+        return new ArticleResource($article);
     }
 }

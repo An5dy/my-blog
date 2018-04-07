@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Services\ArticleService;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ArticleResource;
+use App\Http\Resources\ArticleCollection;
 
 class ArticleController extends Controller
 {
@@ -26,10 +28,9 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        $response = $this->articleService
-                         ->index();
+        $articles = $this->articleService->get();
 
-        return $response;
+        return new ArticleCollection($articles);
     }
 
     /**
@@ -40,35 +41,22 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
-        $response = $this->articleService
-                         ->store($request);
+        $response = $this->articleService->createOrUpdate($request);
 
         return $response;
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
     }
 
     /**
      * 编辑
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @return ArticleResource
      */
     public function edit($id)
     {
-        $response = $this->articleService
-                         ->find($id);
+        $article = $this->articleService->find($id);
 
-        return $response;
+        return new ArticleResource($article);
     }
 
     /**
@@ -80,8 +68,7 @@ class ArticleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $response = $this->articleService
-                         ->store($request, $id);
+        $response = $this->articleService->createOrUpdate($request, $id);
 
         return $response;
     }
@@ -94,8 +81,7 @@ class ArticleController extends Controller
      */
     public function destroy($id)
     {
-        $response = $this->articleService
-                         ->destroy($id);
+        $response = $this->articleService->destroy($id);
 
         return $response;
     }

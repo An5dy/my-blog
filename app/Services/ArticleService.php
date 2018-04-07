@@ -10,8 +10,6 @@ use App\Exceptions\ApiException;
 use App\Repositories\TagRepository;
 use Illuminate\Support\Facades\Cache;
 use App\Repositories\ArticleRepository;
-use App\Http\Resources\ArticleResource;
-use App\Http\Resources\ArticleCollection;
 
 class ArticleService
 {
@@ -40,9 +38,9 @@ class ArticleService
     /**
      * 获取列表
      *
-     * @return ArticleCollection
+     * @return mixed
      */
-    public function index()
+    public function get()
     {
         $articles = $this->articleRepository
                          ->with([
@@ -56,16 +54,16 @@ class ArticleService
                          ->orderBy('id', 'desc')
                          ->paginate(null, $this->columns);
 
-        return new ArticleCollection($articles);
+        return $articles;
     }
 
     /**
      * 列表
      *
      * @param Request $request
-     * @return ArticleCollection
+     * @return mixed
      */
-    public function list(Request $request)
+    public function getByWhere(Request $request)
     {
         $this->columns[] = 'description';
         if (isset($request->orderBy)) { $this->orderBy = $request->orderBy; }
@@ -85,7 +83,7 @@ class ArticleService
                          ->paginate(null, $this->columns);
         $this->handleArticle($articles->items());
 
-        return new ArticleCollection($articles);
+        return $articles;
     }
 
     /**
@@ -96,7 +94,7 @@ class ArticleService
      * @return array
      * @throws ApiException
      */
-    public function store(Request $request, $id = 0)
+    public function createOrUpdate(Request $request, $id = 0)
     {
         $this->attributes = [
             'title' => strip_tags($request->title),
@@ -110,23 +108,22 @@ class ArticleService
         DB::beginTransaction();
         try {
             if (empty($id)) {
-                $article = $this->articleRepository
-                                ->create($this->attributes);
+                $article = $this->articleRepository->create($this->attributes);
             } else {
-                $article = $this->articleRepository
-                                ->update($this->attributes, $id);
+                $article = $this->articleRepository->update($this->attributes, $id);
             }
-            /* 标签 */
+
+            /* 保存标签 */
             $tags = collect($request->tags)->map(function ($tag) {
-                $tagObj = $this->tagRepository
-                               ->firstOrCreate(['title' => strip_tags($tag)]);
+                $tagObj = $this->tagRepository->firstOrCreate(['title' => strip_tags($tag)]);
 
                 return $tagObj->id;
             })->toArray();
             $article->tags()->sync($tags);
 
-            // 清空缓存
-            $this->flushCache();
+            // 清除标记缓存缓存
+            flush_cache_by_tag('articles');
+            flush_cache_by_key('article:' . $article->id);
 
             DB::commit();
 
@@ -143,13 +140,30 @@ class ArticleService
      *
      * @param $id
      * @param string $filed
-     * @return ArticleResource
-     * @throws ApiException
+     * @return mixed
      */
     public function find($id, $filed = 'markdown')
     {
+        $this->columns[] = $filed;
+        $cacheKey = 'article:' . $id;
+        $minutes = config('global.cacheArticle');
+        $article = Cache::remember($cacheKey, $minutes, function () use ($id) {
+            return $this->findById($id);
+        });
+
+        return $article;
+    }
+
+    /**
+     * 获取文章详情
+     *
+     * @param $id
+     * @return mixed
+     * @throws ApiException
+     */
+    public function findById($id)
+    {
         try {
-            $this->columns[] = $filed;
             $article = $this->articleRepository
                             ->with([
                                 'category' => function($query) {
@@ -160,14 +174,13 @@ class ArticleService
                                 }
                             ])
                             ->find($id, $this->columns);
-            $article->published_at = $article->created_at
-                                             ->toFormattedDateString();
-            // 文章查看事件
-            if ($filed != 'markdown') { event(new ArticleCheck($article)); }
+            // 格式化时间
+            if ( ! in_array('markdown', $this->columns)) {
+                $article->published_at = $article->created_at->toFormattedDateString();
+            }
 
-            return new ArticleResource($article);
+            return $article;
         } catch (\Exception $exception) {
-
             throw new ApiException('当前文章不存在');
         }
     }
@@ -184,7 +197,7 @@ class ArticleService
         try {
             $this->articleRepository->delete($id);
 
-            $this->flushCache();
+            flush_cache_by_tag('articles');
 
             return api_success_info('删除成功');
         } catch (\Exception $exception) {
@@ -196,7 +209,7 @@ class ArticleService
     /**
      * 归档
      *
-     * @return ArticleCollection
+     * @return mixed
      */
     public function archive()
     {
@@ -237,13 +250,5 @@ class ArticleService
                 $article->title = implode('<em style="color:#409eff">' . $title . '</em>', $arr);
             }
         });
-    }
-
-    /**
-     * 清除缓存
-     */
-    protected function flushCache()
-    {
-        Cache::tags('articles')->flush();
     }
 }

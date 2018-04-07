@@ -2,6 +2,7 @@
 
 namespace App\Listeners\Articles;
 
+use DB;
 use App\Events\ArticleCheck;
 use App\Services\ArticleCheckService;
 use Illuminate\Queue\InteractsWithQueue;
@@ -11,14 +12,16 @@ class UpdateArticleCheck
 {
     protected $articleCheckService;
 
+    protected $article;
+
     /**
      * Create the event listener.
      *
      * @return void
      */
-    public function __construct(ArticleCheckService $articleCheckService)
+    public function __construct()
     {
-        $this->articleCheckService = $articleCheckService;
+        //
     }
 
     /**
@@ -29,11 +32,25 @@ class UpdateArticleCheck
      */
     public function handle(ArticleCheck $event)
     {
-        // 增加文章查看数
-        $event->article
-              ->increment('checked_num');
-        // 记录查看的用户
-        $this->articleCheckService
-             ->add($event->article->id);
+        $this->article = $event->article;
+
+        $this->updateChecked();
+    }
+
+    /**
+     * 更新文章浏览信息
+     */
+    protected function updateChecked()
+    {
+        DB::transaction(function () {
+            // 增加浏览次数
+            $this->article->increment('checked_num');
+            // 增加浏览记录
+            $this->article->checks()
+                          ->firstOrCreate([
+                              'article_id' => $this->article->id,
+                              'visitor' => request()->ip(),
+                          ]);
+        });
     }
 }

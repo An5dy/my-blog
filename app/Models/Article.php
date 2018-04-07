@@ -34,6 +34,16 @@ class Article extends Model
     }
 
     /**
+     * 文章查看次数
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function checks()
+    {
+        return $this->hasMany('App\Models\ArticleCheck');
+    }
+
+    /**
      * 搜索标题scope
      *
      * @param $query

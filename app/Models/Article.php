@@ -11,11 +11,6 @@ use App\Models\Relationships\BelongsToManyTags;
 use Prettus\Repository\Traits\TransformableTrait;
 use App\Models\Relationships\HasManyArticleChecks;
 
-/**
- * Class Article.
- *
- * @package namespace App\Models;
- */
 class Article extends Model implements Transformable
 {
     use TransformableTrait,

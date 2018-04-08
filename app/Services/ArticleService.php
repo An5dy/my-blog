@@ -107,19 +107,7 @@ class ArticleService
         // 开启事务
         DB::beginTransaction();
         try {
-            if (empty($id)) {
-                $article = $this->articleRepository->create($this->attributes);
-            } else {
-                $article = $this->articleRepository->update($this->attributes, $id);
-            }
-
-            /* 保存标签 */
-            $tags = collect($request->tags)->map(function ($tag) {
-                $tagObj = $this->tagRepository->firstOrCreate(['title' => strip_tags($tag)]);
-
-                return $tagObj->id;
-            })->toArray();
-            $article->tags()->sync($tags);
+            $article = $this->articleRepository->createOrUpdateWithTags($this->attributes, $request->tags, $id);
 
             // 清除标记缓存缓存
             flush_cache_by_tag('articles');

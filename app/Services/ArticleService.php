@@ -5,16 +5,12 @@ namespace App\Services;
 use Parsedown;
 use Illuminate\Http\Request;
 use App\Events\ArticleCheck;
-use App\Exceptions\ApiException;
 use Illuminate\Support\Facades\Cache;
-use App\Repositories\Eloquent\TagRepositoryEloquent as TagRepository;
 use App\Repositories\Eloquent\ArticleRepositoryEloquent as ArticleRepository;
 
 class ArticleService
 {
     protected $articleRepository;
-
-    protected $tagRepository;
 
     protected $attributes = [];
 
@@ -25,13 +21,14 @@ class ArticleService
     protected $orderBy = 'checked_num';
 
     /**
+     * 注入ArticleRepository
+     *
      * ArticleService constructor.
      * @param ArticleRepository $articleRepository
      */
-    public function __construct(ArticleRepository $articleRepository, TagRepository $tagRepository)
+    public function __construct(ArticleRepository $articleRepository)
     {
         $this->articleRepository = $articleRepository;
-        $this->tagRepository = $tagRepository;
     }
 
     /**
@@ -113,7 +110,7 @@ class ArticleService
     }
 
     /**
-     * 详情
+     * 获取文章详情
      *
      * @param $id
      * @param string $filed
@@ -125,41 +122,36 @@ class ArticleService
         $cacheKey = 'article:' . $id;
         $minutes = config('global.cacheArticle');
         $article = Cache::remember($cacheKey, $minutes, function () use ($id) {
-            return $this->findById($id);
+            return $this->findByIdWithRelationship($id);
         });
 
         return $article;
     }
 
     /**
-     * 获取文章详情
+     * 文章详情
      *
      * @param $id
      * @return mixed
-     * @throws ApiException
      */
-    public function findById($id)
+    public function findByIdWithRelationship($id)
     {
-        try {
-            $article = $this->articleRepository
-                            ->with([
-                                'category' => function($query) {
-                                    return $query->select('id', 'title');
-                                },
-                                'tags' => function($query) {
-                                    return $query->select('tags.id', 'article_id', 'title');
-                                }
-                            ])
-                            ->find($id, $this->columns);
-            // 格式化时间
-            if ( ! in_array('markdown', $this->columns)) {
-                $article->published_at = $article->created_at->toFormattedDateString();
-            }
-
-            return $article;
-        } catch (\Exception $exception) {
-            throw new ApiException('当前文章不存在');
+        $article = $this->articleRepository
+                        ->with([
+                            'category' => function($query) {
+                                return $query->select('id', 'title');
+                            },
+                            'tags' => function($query) {
+                                return $query->select('tags.id', 'article_id', 'title');
+                            }
+                        ])
+                        ->find($id, $this->columns);
+        // 格式化时间
+        if ( ! in_array('markdown', $this->columns)) {
+            $article->published_at = $article->created_at->toFormattedDateString();
         }
+
+        return $article;
     }
 
     /**

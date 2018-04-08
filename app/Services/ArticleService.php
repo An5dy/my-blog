@@ -2,8 +2,6 @@
 
 namespace App\Services;
 
-use App\Events\ArticleSaved;
-use DB;
 use Parsedown;
 use Illuminate\Http\Request;
 use App\Events\ArticleCheck;
@@ -105,22 +103,13 @@ class ArticleService
                                       ->text($request->markdown),
             'category_id' => $request->category,
         ];
-        // 开启事务
-        DB::beginTransaction();
-        try {
-            $article = $this->articleRepository->createOrUpdate($this->attributes, $id);
-            // 清除标记缓存缓存
-            flush_cache_by_tag('articles');
-            flush_cache_by_key('article:' . $article->id);
+        $article = $this->articleRepository->createOrUpdate($this->attributes, $id);
 
-            DB::commit();
+        // 清除标记缓存缓存
+        flush_cache_by_tag('articles');
+        flush_cache_by_key('article:' . $article->id);
 
-            return api_success_info('发布成功');
-        } catch (\Exception $exception) {
-            DB::rollback();
-
-            throw new ApiException('发布失败');
-        }
+        return api_success_info('发布成功');
     }
 
     /**

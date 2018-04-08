@@ -2,7 +2,9 @@
 
 namespace App\Repositories\Eloquent;
 
+use DB;
 use App\Models\Article;
+use App\Exceptions\ApiException;
 use App\Validators\ArticleValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
@@ -34,10 +36,20 @@ class ArticleRepositoryEloquent extends BaseRepository implements ArticleReposit
      * @param array $attributes
      * @param int $id
      * @return mixed
+     * @throws ApiException
      */
     public function createOrUpdate(array $attributes, $id = 0)
     {
-        $model = empty($id) ? $this->create($attributes) : $this->update($attributes, $id);
+        DB::beginTransaction();
+
+        try {
+            $model = empty($id) ? $this->create($attributes) : $this->update($attributes, $id);
+            DB::commit();
+        } catch (\Exception $exception) {
+            DB::rollback();
+
+            throw new ApiException('发布失败');
+        }
 
         return $model;
     }

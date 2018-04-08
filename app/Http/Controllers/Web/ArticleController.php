@@ -29,7 +29,7 @@ class ArticleController extends Controller
      */
     public function index(Request $request)
     {
-        $articles = $this->articleService->getByWhere($request);
+        $articles = $this->articleService->getByWhereWithRelationship($request);
 
         return new ArticleCollection($articles);
     }

@@ -36,7 +36,7 @@ class ArticleService
      *
      * @return mixed
      */
-    public function get()
+    public function getWithRelationship()
     {
         $articles = $this->articleRepository
                          ->with([
@@ -59,7 +59,7 @@ class ArticleService
      * @param Request $request
      * @return mixed
      */
-    public function getByWhere(Request $request)
+    public function getByWhereWithRelationship(Request $request)
     {
         $this->columns[] = 'description';
         if (isset($request->orderBy)) { $this->orderBy = $request->orderBy; }

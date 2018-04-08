@@ -86,22 +86,21 @@ class ArticleService
     }
 
     /**
-     * 发布文章
+     * 发布或修改文章
      *
      * @param Request $request
-     * @param $id
+     * @param int $id
      * @return array
-     * @throws ApiException
      */
     public function createOrUpdate(Request $request, $id = 0)
     {
         $this->attributes = [
-            'title' => strip_tags($request->title),
-            'markdown' => $request->markdown,
-            'description' => Parsedown::instance()
-                                      ->setMarkupEscaped(true)
-                                      ->text($request->markdown),
-            'category_id' => $request->category,
+            'title'         => strip_tags($request->title),
+            'markdown'      => $request->markdown,
+            'description'   => Parsedown::instance()
+                                        ->setMarkupEscaped(true)
+                                        ->text($request->markdown),
+            'category_id'   => $request->category,
         ];
 
         $article = $this->articleRepository->createOrUpdate($this->attributes, $id);
@@ -168,22 +167,16 @@ class ArticleService
      *
      * @param $id
      * @return array
-     * @throws ApiException
      */
     public function destroy($id)
     {
-        try {
-            $this->articleRepository->delete($id);
+        $this->articleRepository->delete($id);
 
-            // 清除缓存
-            flush_cache_by_tag('articles');
-            flush_cache_by_key('article:' . $id);
+        // 清除缓存
+        flush_cache_by_tag('articles');
+        flush_cache_by_key('article:' . $id);
 
-            return api_success_info('删除成功');
-        } catch (\Exception $exception) {
-
-            throw new ApiException('删除失败');
-        }
+        return api_success_info('删除成功');
     }
 
     /**

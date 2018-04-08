@@ -36,7 +36,7 @@ class ArticleRepositoryEloquent extends BaseRepository implements ArticleReposit
      * @param array $attributes
      * @param int $id
      * @return mixed
-     * @throws ApiException
+     * @throws \Exception
      */
     public function createOrUpdate(array $attributes, $id = 0)
     {
@@ -48,7 +48,7 @@ class ArticleRepositoryEloquent extends BaseRepository implements ArticleReposit
         } catch (\Exception $exception) {
             DB::rollback();
 
-            throw new ApiException('发布失败');
+            throw $exception;
         }
 
         return $model;

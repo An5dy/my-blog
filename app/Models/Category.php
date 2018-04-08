@@ -9,7 +9,7 @@ use Prettus\Repository\Traits\TransformableTrait;
 
 class Category extends Model implements Transformable
 {
-    use TransformableTrait, SoftDeletes;
+    use TransformableTrait;
 
     /**
      * The attributes that are mass assignable.

@@ -2,11 +2,9 @@
 
 namespace App\Services;
 
-use App\Http\Resources\CategoryCollection;
 use Illuminate\Http\Request;
 use App\Exceptions\ApiException;
 use App\Repositories\Eloquent\CategoryRepositoryEloquent as CategoryRepository;
-use App\Http\Resources\CategoryResource;
 
 class CategoryService
 {
@@ -30,10 +28,11 @@ class CategoryService
      */
     public function index()
     {
-        $categories = $this->categoryRepository
-                           ->paginate(null, ['id', 'title', 'created_at', 'updated_at']);
+        $categories = $this->categoryRepository->paginate(null, [
+            'id', 'title', 'created_at', 'updated_at'
+        ]);
 
-        return new CategoryCollection($categories);
+        return $categories;
     }
 
     /**
@@ -45,36 +44,23 @@ class CategoryService
     {
         $categories = $this->categoryRepository->all(['id', 'title']);
 
-        return new CategoryCollection($categories);
+        return $categories;
     }
 
     /**
-     * 添加分类
+     * 添加或修改分类
      *
      * @param Request $request
      * @param int $id
      * @return array
-     * @throws ApiException
      */
-    public function store(Request $request, $id = 0)
+    public function createOrUpdate(Request $request, $id = 0)
     {
-        $this->attributes = [
-            'title' => $request->title,
-        ];
-        try {
-            if (empty($id)) {
-                $this->categoryRepository
-                     ->create($this->attributes);
-            } else {
-                $this->categoryRepository
-                     ->update($this->attributes, $id);
-            }
+        $this->attributes = ['title' => $request->title];
 
-            return api_success_info('添加成功');
-        } catch (\Exception $exception) {
+        $this->categoryRepository->createOrUpdate($this->attributes, $id);
 
-            throw new ApiException('添加失败');
-        }
+        return api_success_info('添加成功');
     }
 
     /**
@@ -82,17 +68,11 @@ class CategoryService
      *
      * @param $id
      * @return array
-     * @throws ApiException
      */
     public function delete($id)
     {
-        try {
-            $this->categoryRepository->delete($id);
+        $this->categoryRepository->delete($id);
 
-            return api_success_info('删除成功');
-        } catch (\Exception $exception) {
-
-            throw new ApiException('删除失败');
-        }
+        return api_success_info('删除成功');
     }
 }

@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
 use App\Services\CategoryService;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CategoryRequest;
+use App\Http\Resources\CategoryCollection;
 
 class CategoryController extends Controller
 {
@@ -26,9 +27,9 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $response = $this->categoryService->index();
+        $categories = $this->categoryService->index();
 
-        return $response;
+        return new CategoryCollection($categories);
     }
 
     /**
@@ -38,9 +39,9 @@ class CategoryController extends Controller
      */
     public function list()
     {
-        $response = $this->categoryService->list();
+        $categories = $this->categoryService->list();
 
-        return $response;
+        return new CategoryCollection($categories);
     }
 
     /**
@@ -49,9 +50,9 @@ class CategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CategoryRequest $request)
     {
-        $response = $this->categoryService->store($request);
+        $response = $this->categoryService->createOrUpdate($request);
 
         return $response;
     }
@@ -63,9 +64,9 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(CategoryRequest $request, $id)
     {
-        $response = $this->categoryService->store($request, $id);
+        $response = $this->categoryService->createOrUpdate($request, $id);
 
         return $response;
     }

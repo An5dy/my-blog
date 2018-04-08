@@ -103,6 +103,7 @@ class ArticleService
                                       ->text($request->markdown),
             'category_id' => $request->category,
         ];
+
         $article = $this->articleRepository->createOrUpdate($this->attributes, $id);
 
         // 清除标记缓存缓存
@@ -174,7 +175,9 @@ class ArticleService
         try {
             $this->articleRepository->delete($id);
 
+            // 清除缓存
             flush_cache_by_tag('articles');
+            flush_cache_by_key('article:' . $id);
 
             return api_success_info('删除成功');
         } catch (\Exception $exception) {

@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Exceptions\ApiException;
-use App\Repositories\TagRepository;
+use App\Repositories\Eloquent\TagRepositoryEloquent as TagRepository;
 
 class TagService
 {

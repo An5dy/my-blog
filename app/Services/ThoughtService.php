@@ -4,7 +4,7 @@ namespace App\Services;
 
 use Illuminate\Http\Request;
 use App\Exceptions\ApiException;
-use App\Repositories\ThoughtRepository;
+use App\Repositories\Eloquent\ThoughtRepositoryEloquent as ThoughtRepository;
 use Illuminate\Support\Facades\Cache;
 
 class ThoughtService

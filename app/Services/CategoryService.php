@@ -5,7 +5,7 @@ namespace App\Services;
 use App\Http\Resources\CategoryCollection;
 use Illuminate\Http\Request;
 use App\Exceptions\ApiException;
-use App\Repositories\CategoryRepository;
+use App\Repositories\Eloquent\CategoryRepositoryEloquent as CategoryRepository;
 use App\Http\Resources\CategoryResource;
 
 class CategoryService

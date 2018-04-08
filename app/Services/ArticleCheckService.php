@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Repositories\ArticleCheckRepository;
+use App\Repositories\Eloquent\ArticleCheckRepositoryEloquent as ArticleCheckRepository;
 
 class ArticleCheckService
 {

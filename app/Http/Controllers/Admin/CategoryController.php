@@ -12,6 +12,8 @@ class CategoryController extends Controller
     protected $categoryService;
 
     /**
+     * 注入CategoryService
+     *
      * CategoryController constructor.
      * @param CategoryService $categoryService
      */
@@ -21,9 +23,9 @@ class CategoryController extends Controller
     }
 
     /**
-     * 列表
+     * 列表分页
      *
-     * @return \Illuminate\Http\Response
+     * @return CategoryCollection
      */
     public function index()
     {
@@ -35,7 +37,7 @@ class CategoryController extends Controller
     /**
      * 所有分类
      *
-     * @return \App\Http\Resources\CategoryCollection
+     * @return CategoryCollection
      */
     public function list()
     {
@@ -47,8 +49,8 @@ class CategoryController extends Controller
     /**
      * 保存
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param CategoryRequest $request
+     * @return array
      */
     public function store(CategoryRequest $request)
     {
@@ -60,9 +62,9 @@ class CategoryController extends Controller
     /**
      * 修改
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param CategoryRequest $request
+     * @param $id
+     * @return array
      */
     public function update(CategoryRequest $request, $id)
     {
@@ -74,8 +76,8 @@ class CategoryController extends Controller
     /**
      * 删除
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @return array
      */
     public function destroy($id)
     {

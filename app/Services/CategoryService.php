@@ -21,7 +21,7 @@ class CategoryService
     }
 
     /**
-     * 获取列表
+     * 分类列表分页
      *
      * @return CategoryResource
      */

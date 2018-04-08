@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use Illuminate\Http\Request;
-use App\Exceptions\ApiException;
 use App\Repositories\Eloquent\CategoryRepositoryEloquent as CategoryRepository;
 
 class CategoryService

@@ -13,6 +13,8 @@ class ArticleController extends Controller
     protected $articleService;
 
     /**
+     * 注入ArticleService
+     *
      * ArticleController constructor.
      * @param ArticleService $articleService
      */

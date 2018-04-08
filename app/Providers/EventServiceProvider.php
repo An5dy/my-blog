@@ -22,6 +22,9 @@ class EventServiceProvider extends ServiceProvider
         'Laravel\Passport\Events\RefreshTokenCreated' => [
             'App\Listeners\Auth\PruneOldTokens',
         ],
+        'App\Events\ArticleSaved' => [
+            'App\Listeners\Articles\SaveTags',
+        ],
     ];
 
     /**

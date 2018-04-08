@@ -29,27 +29,16 @@ class ArticleRepositoryEloquent extends BaseRepository implements ArticleReposit
     }
 
     /**
-     * 保存或修改文章及所属标签
+     * 保存或修改文章
      *
      * @param array $attributes
-     * @param array $tags
      * @param int $id
      * @return mixed
      */
-    public function createOrUpdateWithTags(array $attributes, array $tags, $id = 0)
+    public function createOrUpdate(array $attributes, $id = 0)
     {
         $model = empty($id) ? $this->create($attributes) : $this->update($attributes, $id);
 
-        // 保存标签
-        $tagIds = collect($tags)->map(function ($tag) use ($model) {
-            $tagModel = $model->tags()->firstOrCreate(['title' => strip_tags($tag)]);
-
-            return $tagModel->id;
-        })->toArray();
-
-        $model->tags()->sync($tagIds);
-        $this->resetModel();
-
-        return $this->parserResult($model);
+        return $model;
     }
 }

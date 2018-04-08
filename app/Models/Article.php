@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Events\ArticleSaved;
 use App\Models\Scopes\ScopeTitle;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -27,5 +28,14 @@ class Article extends Model implements Transformable
      */
     protected $fillable = [
         'category_id', 'title', 'description', 'markdown', 'checked_num'
+    ];
+
+    /**
+     * 绑定事件
+     *
+     * @var array
+     */
+    protected $dispatchesEvents = [
+        'saved' => ArticleSaved::class,
     ];
 }

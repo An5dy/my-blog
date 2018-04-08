@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Events\ArticleSaved;
 use DB;
 use Parsedown;
 use Illuminate\Http\Request;
@@ -107,8 +108,7 @@ class ArticleService
         // 开启事务
         DB::beginTransaction();
         try {
-            $article = $this->articleRepository->createOrUpdateWithTags($this->attributes, $request->tags, $id);
-
+            $article = $this->articleRepository->createOrUpdate($this->attributes, $id);
             // 清除标记缓存缓存
             flush_cache_by_tag('articles');
             flush_cache_by_key('article:' . $article->id);

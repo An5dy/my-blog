@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Scopes\ScopeTitle;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Prettus\Repository\Contracts\Transformable;
@@ -21,7 +22,8 @@ class Article extends Model implements Transformable
         SoftDeletes,
         BelongsToManyTags,
         BelongsToCategory,
-        HasManyArticleChecks;
+        HasManyArticleChecks,
+        ScopeTitle;
 
     /**
      * The attributes that are mass assignable.
@@ -31,16 +33,4 @@ class Article extends Model implements Transformable
     protected $fillable = [
         'category_id', 'title', 'description', 'markdown', 'checked_num'
     ];
-
-    /**
-     * 搜索标题scope
-     *
-     * @param $query
-     * @param $title
-     * @return mixed
-     */
-    public function scopeTitle($query, $title)
-    {
-        return isset($title) ? $query->where('title', 'like', '%' . $title . '%') : $query;
-    }
 }

@@ -22,8 +22,8 @@ class AboutController extends Controller
      */
     public function index()
     {
-        $response = $this->aboutService
-                         ->show();
+        $response = $this->aboutService->show();
+
         return $response;
     }
 }

@@ -4,7 +4,6 @@ namespace App\Repositories\Eloquent;
 
 use DB;
 use App\Models\Article;
-use App\Exceptions\ApiException;
 use App\Validators\ArticleValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;

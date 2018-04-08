@@ -34,5 +34,10 @@ class ArticleRepositoryEloquent extends BaseRepository implements ArticleReposit
     {
         $this->pushCriteria(app(RequestCriteria::class));
     }
-    
+
+
+    public function createWithTags(array $attributes)
+    {
+        // TODO: Implement createWithTags() method.
+    }
 }

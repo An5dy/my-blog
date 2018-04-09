@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Exceptions\ApiException;
 use App\Repositories\Eloquent\TagRepositoryEloquent as TagRepository;
 
 class TagService
@@ -23,18 +22,11 @@ class TagService
      *
      * @param $id
      * @return array
-     * @throws ApiException
      */
     public function destroy($id)
     {
-        try {
-            $this->tagRepository
-                 ->delete($id);
+        $this->tagRepository->delete($id);
 
-            return api_success_info('删除成功');
-        } catch (\Exception $exception) {
-
-            throw new ApiException('删除失败');
-        }
+        return api_success_info('删除成功');
     }
 }

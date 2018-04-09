@@ -50,7 +50,7 @@ class ArticleService
         if ($boolean) {
             $this->orderBy = 'id';
         } elseif (isset($request->orderBy)) {
-            $this->orderBy = 'id';
+            $this->orderBy = 'created_at';
         }
 
         $articles = $this->articleRepository

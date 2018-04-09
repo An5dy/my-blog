@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
 use App\Services\LinkService;
+use App\Http\Requests\LinkRequest;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\LinkCollection;
 
@@ -37,10 +37,10 @@ class LinkController extends Controller
     /**
      * 新增
      *
-     * @param Request $request
+     * @param LinkRequest $request
      * @return array
      */
-    public function store(Request $request)
+    public function store(LinkRequest $request)
     {
         $response = $this->linkService->createOrUpdate($request);
 
@@ -50,11 +50,11 @@ class LinkController extends Controller
     /**
      * 编辑
      *
-     * @param Request $request
+     * @param LinkRequest $request
      * @param $id
      * @return array
      */
-    public function update(Request $request, $id)
+    public function update(LinkRequest $request, $id)
     {
         $response = $this->linkService->createOrUpdate($request, $id);
 

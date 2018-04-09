@@ -31,14 +31,8 @@ class ArticleCheckService
             'article_id' => $articleId,
             'visitor' => request()->ip(),
         ];
-        try {
-            $this->articleCheckRepository
-                 ->firstOrCreate($this->attributes);
+        $this->articleCheckRepository->firstOrCreate($this->attributes);
 
-            return true;
-        } catch (\Exception $exception) {
-
-            return false;
-        }
+        return true;
     }
 }

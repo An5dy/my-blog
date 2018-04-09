@@ -3,8 +3,6 @@
 namespace App\Services;
 
 use Illuminate\Http\Request;
-use App\Exceptions\ApiException;
-use Illuminate\Support\Facades\Cache;
 use App\Http\Resources\LinkCollection;
 use App\Repositories\Eloquent\LinkRepositoryEloquent as LinkRepository;
 
@@ -34,7 +32,7 @@ class LinkService
             'id', 'path', 'description', 'created_at', 'updated_at'
         ]);
 
-        return new LinkCollection($links);
+        return $links;
     }
 
     /**
@@ -43,30 +41,19 @@ class LinkService
      * @param Request $request
      * @param int $id
      * @return array
-     * @throws ApiException
      */
-    public function store(Request $request, $id = 0)
+    public function createOrUpdate(Request $request, $id = 0)
     {
         $this->attributes = [
             'path' => $request->path,
             'description' => $request->description,
         ];
-        try {
-            if (empty($id)) {
-                $this->linkRepository
-                     ->create($this->attributes);
-            } else {
-                $this->linkRepository
-                     ->update($this->attributes, $id);
-            }
 
-            $this->flushCache();
+        $this->linkRepository->createOrUpdate($this->attributes, $id);
 
-            return api_success_info('添加成功');
-        } catch (\Exception $exception) {
+        flush_cache_by_tag('links');
 
-            throw new ApiException('添加失败');
-        }
+        return api_success_info('添加成功');
     }
 
     /**
@@ -74,28 +61,13 @@ class LinkService
      *
      * @param $id
      * @return array
-     * @throws ApiException
      */
     public function destroy($id)
     {
-        try {
-            $this->linkRepository
-                 ->delete($id);
+        $this->linkRepository->delete($id);
 
-            $this->flushCache();
+        flush_cache_by_tag('links');
 
-            return api_success_info('删除成功');
-        } catch (\Exception $exception) {
-
-            throw new ApiException('删除失败');
-        }
-    }
-
-    /**
-     * 清除缓存
-     */
-    protected function flushCache()
-    {
-        Cache::tags('links')->flush();
+        return api_success_info('删除成功');
     }
 }

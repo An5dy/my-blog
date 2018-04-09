@@ -34,7 +34,6 @@ class CategoryRepositoryEloquent extends BaseRepository implements CategoryRepos
      * @param array $attributes
      * @param int $id
      * @return mixed
-     * @throws
      */
     public function createOrUpdate(array $attributes, $id = 0)
     {

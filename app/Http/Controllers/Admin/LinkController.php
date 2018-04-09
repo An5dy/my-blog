@@ -5,12 +5,15 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Services\LinkService;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\LinkCollection;
 
 class LinkController extends Controller
 {
     protected $linkService;
 
     /**
+     * 注入LinkService
+     *
      * LinkController constructor.
      * @param LinkService $linkService
      */
@@ -22,26 +25,24 @@ class LinkController extends Controller
     /**
      * 列表
      *
-     * @return \Illuminate\Http\Response
+     * @return LinkCollection
      */
     public function index()
     {
-        $response = $this->linkService
-                         ->index();
+        $links = $this->linkService->index();
 
-        return $response;
+        return new LinkCollection($links);
     }
 
     /**
      * 新增
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return array
      */
     public function store(Request $request)
     {
-        $response = $this->linkService
-                         ->store($request);
+        $response = $this->linkService->createOrUpdate($request);
 
         return $response;
     }
@@ -49,14 +50,13 @@ class LinkController extends Controller
     /**
      * 编辑
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param $id
+     * @return array
      */
     public function update(Request $request, $id)
     {
-        $response = $this->linkService
-                         ->store($request, $id);
+        $response = $this->linkService->createOrUpdate($request, $id);
 
         return $response;
     }
@@ -64,13 +64,12 @@ class LinkController extends Controller
     /**
      * 删除
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @return array
      */
     public function destroy($id)
     {
-        $response = $this->linkService
-                         ->destroy($id);
+        $response = $this->linkService->destroy($id);
 
         return $response;
     }

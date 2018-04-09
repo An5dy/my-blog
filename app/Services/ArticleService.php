@@ -61,8 +61,20 @@ class ArticleService
      */
     public function getByWhereWithRelationship(Request $request)
     {
-        $this->columns[] = 'description';
-        if (isset($request->orderBy)) { $this->orderBy = $request->orderBy; }
+        $boolean = is_admin_prefix();
+
+        // 前台返回 description 字段
+        if ( ! $boolean) {
+            $this->columns[] = 'description';
+        }
+
+        // 设置查询排序
+        if ($boolean) {
+            $this->orderBy = 'id';
+        } elseif (isset($request->orderBy)) {
+            $this->orderBy = 'id';
+        }
+
         $articles = $this->articleRepository
                          ->with([
                              'category' => function($query) {
@@ -77,7 +89,11 @@ class ArticleService
                          })
                          ->orderBy($this->orderBy, 'desc')
                          ->paginate(null, $this->columns);
-        $this->handleArticle($articles->items());
+
+        // 设置前台搜索字段标记
+        if (! $boolean) {
+            $this->handleArticle($articles->items());
+        }
 
         return $articles;
     }

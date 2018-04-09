@@ -131,3 +131,18 @@ if ( ! function_exists('flush_cache_by_tag')) {
         cache()->tags($tag)->flush();
     }
 }
+
+if ( ! function_exists('is_admin_prefix')) {
+    /**
+     * 判断是否后台路由
+     *
+     * @param string $string
+     * @return bool
+     */
+    function is_admin_prefix($string = 'admin')
+    {
+        $prefix = request()->route()->getPrefix();
+
+        return strpos($prefix, $string) !== false ?: false;
+    }
+}

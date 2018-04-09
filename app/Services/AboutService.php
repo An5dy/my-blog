@@ -48,7 +48,7 @@ class AboutService
      */
     public function show()
     {
-        $prefix = \request()->route()->getPrefix();
+        $prefix = request()->route()->getPrefix();
         if (stripos($prefix, 'admin') !== false) {
             $this->columns = ['id', 'markdown'];
         } else {

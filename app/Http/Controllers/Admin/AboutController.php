@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
 use App\Services\AboutService;
+use App\Http\Requests\AboutRequest;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\AboutResource;
 
@@ -37,10 +37,10 @@ class AboutController extends Controller
     /**
      * 保存或修改
      *
-     * @param Request $request
+     * @param AboutRequest $request
      * @return AboutResource
      */
-    public function store(Request $request)
+    public function store(AboutRequest $request)
     {
         $about = $this->aboutService->createOrUpdate($request);
 

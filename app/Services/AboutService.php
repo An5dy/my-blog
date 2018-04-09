@@ -48,12 +48,8 @@ class AboutService
      */
     public function show()
     {
-        $prefix = request()->route()->getPrefix();
-        if (stripos($prefix, 'admin') !== false) {
-            $this->columns = ['id', 'markdown'];
-        } else {
-            $this->columns = ['description', 'created_at'];
-        }
+        $this->columns = is_admin_prefix() ? ['id', 'markdown'] : ['description', 'created_at'];
+
         $about = $this->aboutRepository->first($this->columns);
 
         if (empty($about)) {

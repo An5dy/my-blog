@@ -28,9 +28,9 @@ class ArticleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $articles = $this->articleService->getWithRelationship();
+        $articles = $this->articleService->getByWhereWithRelationship($request);
 
         return new ArticleCollection($articles);
     }

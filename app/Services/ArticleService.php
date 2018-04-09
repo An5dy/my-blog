@@ -32,28 +32,6 @@ class ArticleService
     }
 
     /**
-     * 获取列表
-     *
-     * @return mixed
-     */
-    public function getWithRelationship()
-    {
-        $articles = $this->articleRepository
-                         ->with([
-                             'category' => function($query) {
-                                return $query->select('id', 'title');
-                             },
-                             'tags' => function($query) {
-                                return $query->select('tags.id', 'article_id', 'title');
-                             }
-                         ])
-                         ->orderBy('id', 'desc')
-                         ->paginate(null, $this->columns);
-
-        return $articles;
-    }
-
-    /**
      * 列表
      *
      * @param Request $request

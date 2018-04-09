@@ -6,6 +6,6 @@ trait ScopeTitle
 {
     public function scopeTitle($query, $title)
     {
-        return isset($title) ? $query->where('title', 'like', $title . '%') : $query;
+        return isset($title) ? $query->where('title', 'like', '%' . $title . '%') : $query;
     }
 }

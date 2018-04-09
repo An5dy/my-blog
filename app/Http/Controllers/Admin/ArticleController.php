@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Requests\ArticleRequest;
 use Illuminate\Http\Request;
 use App\Services\ArticleService;
 use App\Http\Controllers\Controller;
@@ -38,10 +39,10 @@ class ArticleController extends Controller
     /**
      * 保存
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param ArticleRequest $request
+     * @return array
      */
-    public function store(Request $request)
+    public function store(ArticleRequest $request)
     {
         $response = $this->articleService->createOrUpdate($request);
 
@@ -64,11 +65,11 @@ class ArticleController extends Controller
     /**
      * 编辑
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param ArticleRequest $request
+     * @param $id
+     * @return array
      */
-    public function update(Request $request, $id)
+    public function update(ArticleRequest $request, $id)
     {
         $response = $this->articleService->createOrUpdate($request, $id);
 

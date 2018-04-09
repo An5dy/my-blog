@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ThoughtRequest extends FormRequest
+class ArticleRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,13 +24,15 @@ class ThoughtRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'bail|required|max:255',
+            'title' => 'bail|required|string|max:255',
             'markdown' => 'bail|required|string',
+            'category' => 'bail|required|integer',
+            'tags.*' => 'bail|string|max:2',
         ];
     }
 
     /**
-     * 自定义错误提示
+     * 自定义错误信息
      *
      * @return array
      */
@@ -38,9 +40,13 @@ class ThoughtRequest extends FormRequest
     {
         return [
             'title.required' => '标题不能为空！',
-            'title.max' => '标题最多255个字符',
+            'title.max' => '标题最多255个字符!',
             'markdown.required' => '正文不能为空！',
             'markdown.string' => '正文格式不正确！',
+            'category.required' => '分类不能为空！',
+            'category.integer' => '分类选择不正确！',
+            'tags.*.string' => '标签格式不正确！',
+            'tags.*.max' => '标签最多60个字符!'
         ];
     }
 }

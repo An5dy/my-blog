@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Web;
 
-use Illuminate\Http\Request;
 use App\Services\ThoughtService;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ThoughtResource;
@@ -13,7 +12,7 @@ class ThoughtController extends Controller
     protected $thoughtService;
 
     /**
-     * 依赖注入
+     * 依赖注入 ThoughtService
      *
      * ThoughtController constructor.
      * @param ThoughtService $thoughtService
@@ -43,8 +42,7 @@ class ThoughtController extends Controller
      */
     public function show($id)
     {
-        $thought = $this->thoughtService
-                        ->show($id, 'description');
+        $thought = $this->thoughtService->show($id, 'description');
 
         return new ThoughtResource($thought);
     }

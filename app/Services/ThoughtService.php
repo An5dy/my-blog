@@ -3,9 +3,8 @@
 namespace App\Services;
 
 use Illuminate\Http\Request;
-use App\Exceptions\ApiException;
-use App\Repositories\Eloquent\ThoughtRepositoryEloquent as ThoughtRepository;
 use Illuminate\Support\Facades\Cache;
+use App\Repositories\Eloquent\ThoughtRepositoryEloquent as ThoughtRepository;
 
 class ThoughtService
 {
@@ -36,6 +35,7 @@ class ThoughtService
     public function index()
     {
         $thoughts = $this->thoughtRepository
+                         ->orderBy('id', 'desc')
                          ->paginate(null, $this->columns);
 
         return $thoughts;
@@ -70,15 +70,10 @@ class ThoughtService
             'markdown' => $request->markdown,
             'description' => transform_markdown($request->markdown),
         ];
-        if (empty($id)) {
-            $thought = $this->thoughtRepository
-                            ->create($this->attributes);
-        } else {
-            $thought = $this->thoughtRepository
-                            ->update($this->attributes, $id);
-        }
 
-        $this->flushCache();
+        $thought = $this->thoughtRepository->createOrUpdate($this->attributes, $id);
+
+        flush_cache_by_tag('thoughts');
 
         return $thought;
     }
@@ -93,41 +88,24 @@ class ThoughtService
     public function show($id, $filed = 'markdown')
     {
         $this->columns[] = $filed;
-        try {
-            $thought = $this->thoughtRepository
-                            ->find($id, $this->columns);
-        } catch (\Exception $exception) {
 
-            throw new ApiException('当前文章不存在!');
-        }
+        $thought = $this->thoughtRepository->find($id, $this->columns);
 
         return $thought;
     }
 
     /**
-     * 删除随想
+     * 删除
      *
      * @param $id
-     * @throws ApiException
+     * @return array
      */
     public function destroy($id)
     {
-        try {
-            $this->thoughtRepository
-                 ->delete($id);
+        $this->thoughtRepository->delete($id);
 
-            $this->flushCache();
-        } catch (\Exception $exception) {
+        flush_cache_by_tag('thoughts');
 
-            throw new ApiException('删除失败！');
-        }
-    }
-
-    /**
-     * 清除缓存
-     */
-    protected function flushCache()
-    {
-        Cache::tags('thoughts')->flush();
+        return api_success_info('删除成功!');
     }
 }

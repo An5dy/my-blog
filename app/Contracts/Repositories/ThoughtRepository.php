@@ -11,5 +11,5 @@ use Prettus\Repository\Contracts\RepositoryInterface;
  */
 interface ThoughtRepository extends RepositoryInterface
 {
-    //
+    public function createOrUpdate(array $attributes, $id = 0);
 }

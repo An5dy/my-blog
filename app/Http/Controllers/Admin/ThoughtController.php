@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Resources\ThoughtCollection;
-use App\Http\Resources\ThoughtResource;
-use Illuminate\Http\Request;
 use App\Services\ThoughtService;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ThoughtRequest;
+use App\Http\Resources\ThoughtResource;
+use App\Http\Resources\ThoughtCollection;
 
 class ThoughtController extends Controller
 {
     protected $thoughtService;
 
     /**
-     * 依赖注入ThoughtService
+     * 依赖注入 ThoughtService
      *
      * ThoughtController constructor.
      * @param ThoughtService $thoughtService
@@ -26,26 +26,24 @@ class ThoughtController extends Controller
     /**
      * 列表
      *
-     * @return \Illuminate\Http\Response
+     * @return ThoughtCollection
      */
     public function index()
     {
-        $thoughts = $this->thoughtService
-                         ->index();
+        $thoughts = $this->thoughtService->index();
 
         return new ThoughtCollection($thoughts);
     }
 
     /**
-     * 保存随想
+     * 保存
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param ThoughtRequest $request
+     * @return ThoughtResource
      */
-    public function store(Request $request)
+    public function store(ThoughtRequest $request)
     {
-        $thought = $this->thoughtService
-                        ->createOrUpdate($request);
+        $thought = $this->thoughtService->createOrUpdate($request);
 
         return new ThoughtResource($thought);
     }
@@ -53,28 +51,26 @@ class ThoughtController extends Controller
     /**
      * 详情
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @return ThoughtResource
      */
     public function show($id)
     {
-        $response = $this->thoughtService
-                         ->show($id);
+        $thought = $this->thoughtService->show($id);
 
-        return new ThoughtResource($response);
+        return new ThoughtResource($thought);
     }
 
     /**
-     * 修改随想
+     * 修改
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param ThoughtRequest $request
+     * @param $id
+     * @return ThoughtResource
      */
-    public function update(Request $request, $id)
+    public function update(ThoughtRequest $request, $id)
     {
-        $thought = $this->thoughtService
-                        ->createOrUpdate($request, $id);
+        $thought = $this->thoughtService->createOrUpdate($request, $id);
 
         return new ThoughtResource($thought);
     }
@@ -82,14 +78,13 @@ class ThoughtController extends Controller
     /**
      * 删除
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @return array
      */
     public function destroy($id)
     {
-        $this->thoughtService
-             ->destroy($id);
+        $response = $this->thoughtService->destroy($id);
 
-        return api_success_info('删除成功!');
+        return $response;
     }
 }

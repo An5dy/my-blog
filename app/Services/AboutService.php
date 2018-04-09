@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use Illuminate\Http\Request;
-use App\Http\Resources\AboutResource;
+use App\Exceptions\ApiException;
 use App\Repositories\Eloquent\AboutRepositoryEloquent as AboutRepository;
 
 class AboutService
@@ -11,6 +11,8 @@ class AboutService
     protected $aboutRepository;
 
     protected $attributes = [];
+
+    protected $columns = [];
 
     /**
      * AboutService constructor.
@@ -22,52 +24,42 @@ class AboutService
     }
 
     /**
-     * 关于详情
-     *
-     * @return AboutResource
-     */
-    public function index()
-    {
-        $about = $this->aboutRepository->first([
-            'id', 'markdown'
-        ]);
-
-        return new AboutResource($about);
-    }
-
-    /**
      * 发布
      *
      * @param Request $request
-     * @return array
+     * @return mixed
      */
-    public function store(Request $request)
+    public function createOrUpdate(Request $request)
     {
         $this->attributes = [
             'markdown' => $request->markdown,
             'description' => transform_markdown($request->markdown),
         ];
-        $id = $request->id;
-        if (empty($id)) {
-            $about = $this->aboutRepository->create($this->attributes);
-        } else {
-            $about = $this->aboutRepository->update($this->attributes, $id);
-        }
+        $about = $this->aboutRepository->createOrUpdate($this->attributes, $request->id);
 
-        return new AboutResource($about);
+        return $about;
     }
 
     /**
-     * 关于
+     * 详情
      *
-     * @return AboutResource
+     * @return mixed
+     * @throws ApiException
      */
     public function show()
     {
-        $about = $this->aboutRepository->first([
-            'description', 'created_at'
-        ]);
+        $prefix = \request()->route()->getPrefix();
+        if (stripos($prefix, 'admin') !== false) {
+            $this->columns = ['id', 'markdown'];
+        } else {
+            $this->columns = ['description', 'created_at'];
+        }
+        $about = $this->aboutRepository->first($this->columns);
 
-        return new AboutResource($about);
+        if (empty($about)) {
+            throw new ApiException('关于不存在！');
+        }
+
+        return $about;
     }
 }

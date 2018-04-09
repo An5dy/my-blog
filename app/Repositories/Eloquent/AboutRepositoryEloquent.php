@@ -2,17 +2,12 @@
 
 namespace App\Repositories\Eloquent;
 
+use App\Models\About;
+use App\Validators\AboutValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
 use App\Contracts\Repositories\AboutRepository;
-use App\Models\About;
-use App\Validators\AboutValidator;
 
-/**
- * Class AboutRepositoryEloquent.
- *
- * @package namespace App\Repositories\Eloquent;
- */
 class AboutRepositoryEloquent extends BaseRepository implements AboutRepository
 {
     /**
@@ -25,8 +20,6 @@ class AboutRepositoryEloquent extends BaseRepository implements AboutRepository
         return About::class;
     }
 
-    
-
     /**
      * Boot up the repository, pushing criteria
      */
@@ -34,5 +27,18 @@ class AboutRepositoryEloquent extends BaseRepository implements AboutRepository
     {
         $this->pushCriteria(app(RequestCriteria::class));
     }
-    
+
+    /**
+     * 保存或修改
+     *
+     * @param array $attributes
+     * @param int $id
+     * @return mixed
+     */
+    public function createOrUpdate(array $attributes, $id = 0)
+    {
+        $model = empty($id) ? $this->create($attributes) : $this->update($attributes, $id);
+
+        return $model;
+    }
 }

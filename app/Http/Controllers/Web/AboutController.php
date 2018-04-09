@@ -2,14 +2,20 @@
 
 namespace App\Http\Controllers\Web;
 
-use Illuminate\Http\Request;
 use App\Services\AboutService;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\AboutResource;
 
 class AboutController extends Controller
 {
     protected $aboutService;
 
+    /**
+     * 注入AboutService
+     *
+     * AboutController constructor.
+     * @param AboutService $aboutService
+     */
     public function __construct(AboutService $aboutService)
     {
         $this->aboutService = $aboutService;
@@ -22,8 +28,8 @@ class AboutController extends Controller
      */
     public function index()
     {
-        $response = $this->aboutService->show();
+        $about = $this->aboutService->show();
 
-        return $response;
+        return new AboutResource($about);
     }
 }

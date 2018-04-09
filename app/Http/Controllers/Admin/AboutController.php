@@ -2,14 +2,21 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Services\AboutService;
 use Illuminate\Http\Request;
+use App\Services\AboutService;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\AboutResource;
 
 class AboutController extends Controller
 {
     protected $aboutService;
 
+    /**
+     * 注入AboutService
+     *
+     * AboutController constructor.
+     * @param AboutService $aboutService
+     */
     public function __construct(AboutService $aboutService)
     {
         $this->aboutService = $aboutService;
@@ -22,23 +29,21 @@ class AboutController extends Controller
      */
     public function index()
     {
-        $response = $this->aboutService
-                         ->index();
+        $about = $this->aboutService->show();
 
-        return $response;
+        return new AboutResource($about);
     }
 
     /**
-     * 保存
+     * 保存或修改
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return AboutResource
      */
     public function store(Request $request)
     {
-        $response = $this->aboutService
-                         ->store($request);
+        $about = $this->aboutService->createOrUpdate($request);
 
-        return $response;
+        return new AboutResource($about);
     }
 }

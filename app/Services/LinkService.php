@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use Illuminate\Http\Request;
-use App\Http\Resources\LinkCollection;
 use App\Repositories\Eloquent\LinkRepositoryEloquent as LinkRepository;
 
 class LinkService
@@ -24,7 +23,7 @@ class LinkService
     /**
      * 获取链接列表
      *
-     * @return LinkCollection
+     * @return mixed
      */
     public function index()
     {

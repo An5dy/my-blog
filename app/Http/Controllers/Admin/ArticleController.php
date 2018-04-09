@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\ArticleRequest;
-use Illuminate\Http\Request;
 use App\Services\ArticleService;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\SearchRequest;
+use App\Http\Requests\ArticleRequest;
 use App\Http\Resources\ArticleResource;
 use App\Http\Resources\ArticleCollection;
 
@@ -27,9 +27,10 @@ class ArticleController extends Controller
     /**
      * 列表
      *
-     * @return \Illuminate\Http\Response
+     * @param SearchRequest $request
+     * @return ArticleCollection
      */
-    public function index(Request $request)
+    public function index(SearchRequest $request)
     {
         $articles = $this->articleService->getByWhereWithRelationship($request);
 

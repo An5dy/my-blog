@@ -26,8 +26,8 @@ class ArticleRequest extends FormRequest
         return [
             'title' => 'bail|required|string|max:255',
             'markdown' => 'bail|required|string',
-            'category' => 'bail|required|integer',
-            'tags.*' => 'bail|string|max:2',
+            'category' => 'bail|required|integer|exists:categories,id',
+            'tags.*' => 'bail|string|max:60',
         ];
     }
 
@@ -45,6 +45,7 @@ class ArticleRequest extends FormRequest
             'markdown.string' => '正文格式不正确！',
             'category.required' => '分类不能为空！',
             'category.integer' => '分类选择不正确！',
+            'category.exists' => '分类不存在！',
             'tags.*.string' => '标签格式不正确！',
             'tags.*.max' => '标签最多60个字符!'
         ];

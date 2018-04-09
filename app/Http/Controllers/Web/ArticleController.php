@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Web;
 
-use Illuminate\Http\Request;
 use App\Services\ArticleService;
+use App\Http\Requests\SearchRequest;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ArticleResource;
 use App\Http\Resources\ArticleCollection;
@@ -24,10 +24,10 @@ class ArticleController extends Controller
     /**
      * 文章列表
      *
-     * @param Request $request
-     * @return \App\Http\Resources\ArticleCollection
+     * @param SearchRequest $request
+     * @return ArticleCollection
      */
-    public function index(Request $request)
+    public function index(SearchRequest $request)
     {
         $articles = $this->articleService->getByWhereWithRelationship($request);
 

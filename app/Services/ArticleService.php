@@ -145,6 +145,9 @@ class ArticleService
             $article->published_at = $article->created_at->toFormattedDateString();
         }
 
+        // 浏览事件
+        event(new ArticleCheck($article));
+
         return $article;
     }
 

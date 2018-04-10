@@ -14,7 +14,7 @@ class EventServiceProvider extends ServiceProvider
      */
     protected $listen = [
         'App\Events\ArticleCheck' => [
-            'App\Listeners\Articles\UpdateArticleCheck',
+            'App\Listeners\Articles\AddCheckedNum',// 增加文章浏览量事件
         ],
         'Laravel\Passport\Events\AccessTokenCreated' => [
             'App\Listeners\Auth\RevokeOldTokens',
@@ -23,7 +23,7 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\Auth\PruneOldTokens',
         ],
         'App\Events\ArticleSaved' => [
-            'App\Listeners\Articles\SaveTags',
+            'App\Listeners\Articles\SaveTags',// 保存文章标签事件
         ],
     ];
 

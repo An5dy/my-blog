@@ -10,9 +10,9 @@ return [
 
     'passport' => [
         'personal_access_client_id' => env('PASSPORT_PERSONAL_ACCESS_CLIENT_ID1'),
-        'personal_access_client_secret' => env('PASSPORT_PERSONAL_ACCESS_CLIENT_SECRET'),
-        'grant_client_id' => env('PASSPORT_PASSWORD_GRANT_CLIENT_ID'),
-        'grant_client_secret' => env('PASSPORT_PASSWORD_GRANT_CLIENT_SECRET'),
+        'personal_access_client_secret' => env('PASSPORT_PERSONAL_ACCESS_CLIENT_SECRET1'),
+        'grant_client_id' => env('PASSPORT_PASSWORD_GRANT_CLIENT_ID1'),
+        'grant_client_secret' => env('PASSPORT_PASSWORD_GRANT_CLIENT_SECRET1'),
     ],
 
     /*

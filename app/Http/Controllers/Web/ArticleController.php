@@ -42,7 +42,7 @@ class ArticleController extends Controller
      */
     public function show($id)
     {
-        $article = $this->articleService->find($id, 'description');
+        $article = $this->articleService->find($id);
 
         return new ArticleResource($article);
     }

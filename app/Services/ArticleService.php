@@ -107,18 +107,23 @@ class ArticleService
      * 获取文章详情
      *
      * @param $id
-     * @param string $filed
      * @return mixed
      */
-    public function find($id, $filed = 'markdown')
+    public function find($id)
     {
-        $this->columns[] = 'markdown';
-        $this->columns[] = 'description';
-        $cacheKey = 'article:' . $id;
-        $minutes = config('global.cacheArticle');
-        $article = Cache::remember($cacheKey, $minutes, function () use ($id) {
-            return $this->findByIdWithRelationship($id);
-        });
+        $boolean = is_admin_prefix();
+        // 后台不使用缓存
+        if ($boolean) {
+            $this->columns[] = 'markdown';
+            $article = $this->findByIdWithRelationship($id);
+        } else {
+            $this->columns[] = 'description';
+            $cacheKey = 'article:' . $id;
+            $minutes = config('global.cacheArticle');
+            $article = Cache::remember($cacheKey, $minutes, function () use ($id) {
+                return $this->findByIdWithRelationship($id);
+            });
+        }
 
         return $article;
     }
@@ -142,7 +147,9 @@ class ArticleService
                         ])
                         ->find($id, $this->columns);
         // 格式化时间
-        $article->published_at = $article->created_at->toFormattedDateString();
+        if ( ! in_array('markdown', $this->columns)) {
+            $article->published_at = $article->created_at->toFormattedDateString();
+        }
 
         // 浏览事件
         event(new ArticleCheck($article));

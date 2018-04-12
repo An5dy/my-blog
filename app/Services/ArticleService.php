@@ -112,7 +112,8 @@ class ArticleService
      */
     public function find($id, $filed = 'markdown')
     {
-        $this->columns[] = $filed;
+        $this->columns[] = 'markdown';
+        $this->columns[] = 'description';
         $cacheKey = 'article:' . $id;
         $minutes = config('global.cacheArticle');
         $article = Cache::remember($cacheKey, $minutes, function () use ($id) {
@@ -141,9 +142,7 @@ class ArticleService
                         ])
                         ->find($id, $this->columns);
         // 格式化时间
-        if ( ! in_array('markdown', $this->columns)) {
-            $article->published_at = $article->created_at->toFormattedDateString();
-        }
+        $article->published_at = $article->created_at->toFormattedDateString();
 
         // 浏览事件
         event(new ArticleCheck($article));

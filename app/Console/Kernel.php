@@ -13,8 +13,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        \App\Console\Commands\RepositoryMakeCommand::class,
         \App\Console\Commands\ServiceMakeCommand::class,
+        \App\Console\Commands\ResetOpcache::class,
     ];
 
     /**

@@ -25,7 +25,7 @@ class UploadController extends Controller
      * @param Request $request
      * @return array
      */
-    public function upload(Request $request)
+    public function __invoke(Request $request)
     {
         $response= $this->uploadService->upload();
 

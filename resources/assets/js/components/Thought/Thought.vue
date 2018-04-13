@@ -86,19 +86,19 @@
                 this.getThoughts();
             },
             handleDelete(index, row) {
-                this.axios.post('/admin/thoughts/' + row.id)
+                this.axios.post('/admin/thoughts/' + row.id, {_method: 'DELETE'})
                     .then(response => {
                         if (response.data.code === '10000') {
                             this.thoughts.splice(index, 1);
-                            this.$message.success('删除成功');
+                            this.$message.success(response.data.message);
                             this.getArticles();
                         } else {
-                            this.$message.error('删除失败');
+                            this.$message.error(response.data.message);
                         }
                     })
             },
             handleEdit(index, row) {
-                this.$router.push('/admin/thoughts/edit/' + row.id);
+                this.$router.push('/admin/thoughts/' + row.id + '/edit');
             },
         },
         mounted() {

@@ -84,22 +84,23 @@
             onSubmit() {
                 let url = '/admin/thoughts';
                 if (this.$route.params.id > 0) {
-                    url = url + '/update/' +  this.$route.params.id;
+                    url = url + '/' +  this.$route.params.id;
+                    this.thought._method = 'PUT';
                 }
                 this.axios.post(url, this.thought)
                     .then(response => {
                         if (response.data.code === '10000') {
-                            this.$message.success('发布成功');
+                            this.$message.success(response.data.message);
                             this.$router.push('/admin/thoughts');
                         } else {
-                            this.$message.error('发布失败');
+                            this.$message.error(response.data.message);
                         }
                     });
             },
             getThought() {
                 if (this.$route.params.id) {
                     console.log(this.$route.params.id)
-                    this.axios.get('/admin/thoughts/edit/' + this.$route.params.id)
+                    this.axios.get('/admin/thoughts/' + this.$route.params.id)
                         .then(response => {
                             if (response.data.code === '10000') {
                                 this.thought = response.data.data;

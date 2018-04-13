@@ -86,13 +86,13 @@
         },
         methods: {
             handleDelete(index, row) {
-                this.axios.post('/admin/links/' + row.id)
+                this.axios.post('/admin/links/' + row.id, {_method: 'DELETE'})
                     .then(response => {
                         if (response.data.code === '10000') {
                             this.links.splice(index, 1);
-                            this.$message.success('删除成功');
+                            this.$message.success(response.data.message);
                         } else {
-                            this.$message.error('删除失败');
+                            this.$message.error(response.data.message);
                         }
                     });
             },
@@ -110,16 +110,20 @@
                     });
             },
             onEdit() {
-                let formData = {path: this.currentLink.path, description: this.currentLink.description};
-                this.axios.post('/admin/links/update/' + this.currentLink.id, formData)
+                let formData = {
+                    path: this.currentLink.path,
+                    description: this.currentLink.description,
+                    _method: 'PUT',
+                };
+                this.axios.post('/admin/links/' + this.currentLink.id, formData)
                     .then(response => {
                         if (response.data.code === '10000') {
                             this.currentRow.path = this.currentLink.path;
                             this.currentRow.description = this.currentLink.description;
-                            this.$message.success('修改成功');
+                            this.$message.success(response.data.message);
                             this.dialogFormVisible = false;
                         } else {
-                            this.$message.error('修改失败');
+                            this.$message.error(response.data.message);
                         }
                     });
             }

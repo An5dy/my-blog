@@ -107,28 +107,28 @@
                 this.getArticles();
             },
             handleDelete(index, row) {
-                this.axios.post('/admin/articles/' + row.id)
+                this.axios.post('/admin/articles/' + row.id, {_method: 'DELETE'})
                     .then(response => {
                         if (response.data.code === '10000') {
                             this.articles.splice(index, 1);
-                            this.$message.success('删除成功');
+                            this.$message.success(response.data.message);
                             this.getArticles();
                         } else {
-                            this.$message.error('删除失败');
+                            this.$message.error(response.data.message);
                         }
                     })
             },
             handleEdit(index, row) {
-                this.$router.push('/admin/articles/edit/' + row.id);
+                this.$router.push('/admin/articles/' + row.id + '/edit');
             },
             handleClose(index, tags) {
                 this.axios.post('/admin/tags/' + tags[index].id)
                     .then(response => {
                         if (response.data.code === '10000') {
                             tags.splice(index, 1);
-                            this.$message.success('删除成功');
+                            this.$message.success(response.data.message);
                         } else {
-                            this.$message.error('删除失败');
+                            this.$message.error(response.data.message);
                         }
                     });
             },

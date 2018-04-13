@@ -28,10 +28,10 @@
                 this.axios.post('/admin/links', this.link)
                     .then(response => {
                         if (response.data.code === '10000') {
-                            this.$message.success('添加成功');
+                            this.$message.success(response.data.message);
                             this.$router.push('/admin/links');
                         } else {
-                            this.$message.error('添加失败');
+                            this.$message.error(response.data.message);
                         }
                     });
             }

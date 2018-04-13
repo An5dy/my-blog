@@ -21,7 +21,7 @@ class SidebarController extends Controller
     /**
      * 侧边栏数据
      */
-    public function index()
+    public function __invoke()
     {
         $response = $this->sidebarService->index();
 

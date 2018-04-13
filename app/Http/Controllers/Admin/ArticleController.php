@@ -56,7 +56,7 @@ class ArticleController extends Controller
      * @param $id
      * @return ArticleResource
      */
-    public function edit($id)
+    public function show($id)
     {
         $article = $this->articleService->find($id);
 

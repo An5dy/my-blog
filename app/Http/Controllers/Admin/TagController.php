@@ -26,7 +26,7 @@ class TagController extends Controller
      * @param $id
      * @return array
      */
-    public function destroy($id)
+    public function __invoke($id)
     {
         $response = $this->tagService->destroy($id);
 

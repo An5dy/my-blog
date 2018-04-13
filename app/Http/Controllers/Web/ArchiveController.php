@@ -24,10 +24,9 @@ class ArchiveController extends Controller
      *
      * @return mixed
      */
-    public function index()
+    public function __invoke()
     {
-        $response = $this->articleService
-                         ->archive();
+        $response = $this->articleService->archive();
 
         return new ArticleCollection($response);
     }

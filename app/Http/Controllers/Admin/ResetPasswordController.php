@@ -14,7 +14,7 @@ class ResetPasswordController extends Controller
      * @param ResetPasswordRequest $request
      * @return array
      */
-    public function reset(ResetPasswordRequest $request)
+    public function __invoke(ResetPasswordRequest $request)
     {
         $user = $request->user();
         $user->password = Hash::make($request->newPassword);

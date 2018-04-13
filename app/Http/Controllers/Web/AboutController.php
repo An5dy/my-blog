@@ -26,7 +26,7 @@ class AboutController extends Controller
      *
      * @return \App\Http\Resources\AboutResource
      */
-    public function index()
+    public function __invoke()
     {
         $about = $this->aboutService->show();
 

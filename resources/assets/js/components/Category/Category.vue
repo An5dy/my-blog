@@ -107,14 +107,14 @@
                 this.getCategories();
             },
             handleDelete(index, row) {
-                this.axios.post('/admin/categories/' + row.id)
+                this.axios.post('/admin/categories/' + row.id, {_method: 'DELETE'})
                     .then(response => {
                         if (response.data.code === '10000') {
                             this.categories.splice(index, 1);
-                            this.$message.success('删除成功');
+                            this.$message.success(response.data.message);
                             this.getCategories();
                         } else {
-                            this.$message.error('删除失败');
+                            this.$message.error(response.data.message);
                         }
                     })
             },
@@ -124,14 +124,14 @@
                 this.dialogFormVisible = true;
             },
             onEdit() {
-                this.axios.post('/admin/categories/update/' + this.currentCategory.id, {title: this.currentCategory.title})
+                this.axios.put('/admin/categories/' + this.currentCategory.id, {title: this.currentCategory.title, _method: 'put'})
                     .then(response => {
                         if (response.data.code === '10000') {
                             this.currentRow.title = this.currentCategory.title;
-                            this.$message.success('修改成功');
+                            this.$message.success(response.data.message);
                             this.dialogFormVisible = false;
                         } else {
-                            this.$message.error('修改失败');
+                            this.$message.error(response.data.message);
                         }
                     })
             }

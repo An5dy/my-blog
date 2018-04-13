@@ -160,21 +160,22 @@
             onSubmit() {
                 let url = '/admin/articles';
                 if (this.$route.params.id > 0) {
-                    url = url + '/update/' +  this.$route.params.id;
+                    url = url + '/' +  this.$route.params.id;
+                    this.article._method = 'PUT';
                 }
                 this.axios.post(url, this.article)
                     .then(response => {
                         if (response.data.code === '10000') {
-                            this.$message.success('发布成功');
+                            this.$message.success(response.data.message);
                             this.$router.push('/admin');
                         } else {
-                            this.$message.error('发布失败');
+                            this.$message.error(response.data.message);
                         }
                     });
             },
             getArticle() {
                 if (this.$route.params.id) {
-                    this.axios.get('/admin/articles/edit/' + this.$route.params.id)
+                    this.axios.get('/admin/articles/' + this.$route.params.id)
                         .then(response => {
                             if (response.data.code === '10000') {
                                 this.article = response.data.data;

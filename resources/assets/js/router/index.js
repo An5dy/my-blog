@@ -17,7 +17,7 @@ let routes = [
                 component: require('../components/Article/ArticleAdd'),
             },
             {
-                path: 'articles/edit/:id',
+                path: 'articles/:id/edit',
                 component: require('../components/Article/ArticleAdd'),
             },
             {
@@ -29,7 +29,7 @@ let routes = [
                 component: require('../components/Thought/ThoughtAdd'),
             },
             {
-                path: 'thoughts/edit/:id',
+                path: 'thoughts/:id/edit',
                 component: require('../components/Thought/ThoughtAdd'),
             },
             {

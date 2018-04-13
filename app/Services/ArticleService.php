@@ -149,10 +149,9 @@ class ArticleService
         // 格式化时间
         if ( ! in_array('markdown', $this->columns)) {
             $article->published_at = $article->created_at->toFormattedDateString();
+            // 浏览事件
+            event(new ArticleCheck($article));
         }
-
-        // 浏览事件
-        event(new ArticleCheck($article));
 
         return $article;
     }

@@ -11,10 +11,10 @@
 |
 */
 // 前台路由
-Route::any('{all}', function () {
-    return view('index');
-})->where(['all' => '^(?!admin).*$']);
-// 后台路由
-Route::any('/admin/{all?}', function () {
-    return view('admin.index');
-})->where('all', '.*?');
+//Route::any('{all}', function () {
+//    return view('index');
+//})->where(['all' => '^(?!admin).*$']);
+//// 后台路由
+//Route::any('/admin/{all?}', function () {
+//    return view('admin.index');
+//})->where('all', '.*?');

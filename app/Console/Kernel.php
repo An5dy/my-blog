@@ -14,7 +14,6 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         \App\Console\Commands\ServiceMakeCommand::class,
-        \App\Console\Commands\ResetOpcache::class,
     ];
 
     /**

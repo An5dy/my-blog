@@ -11,7 +11,7 @@ class ResetOpcache extends Command
      *
      * @var string
      */
-    protected $signature = 'rest:opcache';
+    protected $signature = 'reset:opcache';
 
     /**
      * The console command description.

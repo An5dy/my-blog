@@ -27,17 +27,4 @@ class AboutRequest extends FormRequest
             'markdown' => 'bail|required|string'
         ];
     }
-
-    /**
-     * 自定义错误信息
-     *
-     * @return array
-     */
-    public function messages()
-    {
-        return [
-            'markdown.required' => '关于不能为空！',
-            'markdown.string' => '关于必须为字符串！',
-        ];
-    }
 }

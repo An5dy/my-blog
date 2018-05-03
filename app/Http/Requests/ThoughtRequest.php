@@ -28,19 +28,4 @@ class ThoughtRequest extends FormRequest
             'markdown' => 'bail|required|string',
         ];
     }
-
-    /**
-     * 自定义错误提示
-     *
-     * @return array
-     */
-    public function messages()
-    {
-        return [
-            'title.required' => '标题不能为空！',
-            'title.max' => '标题最多255个字符',
-            'markdown.required' => '正文不能为空！',
-            'markdown.string' => '正文格式不正确！',
-        ];
-    }
 }

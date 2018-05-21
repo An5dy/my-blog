@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Requests\ImageRequest;
 use App\Services\UploadService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -25,7 +26,7 @@ class UploadController extends Controller
      * @param Request $request
      * @return array
      */
-    public function __invoke(Request $request)
+    public function __invoke(ImageRequest $request)
     {
         $response= $this->uploadService->upload();
 

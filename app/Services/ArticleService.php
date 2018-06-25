@@ -1,11 +1,15 @@
 <?php
+declare(strict_types = 1);
 
 namespace App\Services;
 
 use Parsedown;
+use App\Models\Article;
 use Illuminate\Http\Request;
 use App\Events\ArticleCheck;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use App\Repositories\Eloquent\ArticleRepositoryEloquent as ArticleRepository;
 
 class ArticleService
@@ -37,7 +41,7 @@ class ArticleService
      * @param Request $request
      * @return mixed
      */
-    public function getByWhereWithRelationship(Request $request)
+    public function getByWhereWithRelationship(Request $request):LengthAwarePaginator
     {
         $boolean = is_admin_prefix();
 
@@ -83,7 +87,7 @@ class ArticleService
      * @param int $id
      * @return array
      */
-    public function createOrUpdate(Request $request, $id = 0)
+    public function createOrUpdate(Request $request, $id = 0):array
     {
         $this->attributes = [
             'title'         => strip_tags($request->title),
@@ -134,7 +138,7 @@ class ArticleService
      * @param $id
      * @return mixed
      */
-    public function findByIdWithRelationship($id)
+    public function findByIdWithRelationship($id):Article
     {
         $article = $this->articleRepository
                         ->with([
@@ -162,7 +166,7 @@ class ArticleService
      * @param $id
      * @return array
      */
-    public function destroy($id)
+    public function destroy($id):array
     {
         $this->articleRepository->delete($id);
 
@@ -178,7 +182,7 @@ class ArticleService
      *
      * @return mixed
      */
-    public function archive()
+    public function archive():Collection
     {
         // 设置缓存
         $articles = Cache::tags(['articles', 'archives'])->rememberForever('archives', function () {
